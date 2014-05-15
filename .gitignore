@@ -1,0 +1,9 @@
+test/
+.envrc
+*.sublime-workspace
+node_modules/
+.DS_Store
+log/*.log
+tmp/**/*
+doc/api
+doc/app
