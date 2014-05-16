@@ -1,4 +1,3 @@
-test/
 .envrc
 *.sublime-workspace
 node_modules/

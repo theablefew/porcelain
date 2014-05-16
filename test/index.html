@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+  <title>porcelain-charts</title>
+
+<script type="text/javascript" src="js/d3.min.js"></script>
+<script type="text/javascript" src="js/crossfilter.js"></script>
+<script type="text/javascript" src="js/dc.js"></script>
+
+<script type="text/javascript" src="../src/Porcelain.js"></script>
+<script type="text/javascript" src="../src/BaseChart.js"></script>
+<script type="text/javascript" src="../src/PieChart.js"></script>
+<script type="text/javascript" src="../src/HorizontalBar.js"></script>
+<script type="text/javascript" src="../src/VolumeChart.js"></script>
+<script type="text/javascript" src="../src/VolumeTrendChart.js"></script>
+
+<link rel="stylesheet" type="text/css" href="style/dc.css">
+
+</head>
+<body>
+
+
+<div id='foo'></div>
+<div id='bar' class='porcelain-chartable' data-chart-type='pie-chart' data-data='[{"key": "baz", "value": 90}, {"key": "qux", "value": 10}]'></div>
+<div id='baz'></div>
+<div id='qux'></div>
+<div id='quack'></div>
+
+<script type="text/javascript">
+
+var p = Porcelain.PieChart('#foo');
+
+p.data = [{key: 'foo', value: 45}, {key: 'bar', value: 55}];
+p.size = {width: 400, height: 400};
+p.radius = 50;
+
+p.render('foobar', 'bazqux');
+
+
+var sentiment_theme = {
+  'foo' : 'rgba(151, 199, 63, 0.6)',
+  'bar' : 'rgba(195, 39, 97, 0.6)',
+  'baz' : 'rgba(227, 223, 189, 0.6)',
+  'qux' : 'rgba(23, 28, 32, 0.6)'
+}
+
+var h = Porcelain.HorizontalBarChart('#baz');
+
+h.data       = [{"foo": 10, "bar": 45, "baz": 30, "qux":20}];
+h.categories = ["foo", "bar", "baz", "qux"];
+h.size       = {width: 800, height: 200};
+h.theme      = sentiment_theme;
+
+h.render();
+
+var v = Porcelain.VolumeChart('#qux');
+
+v.data = [{"key":"S.H.I.E.L.D.","value":6651},{"key":"The Blacklist","value":3266},{"key":"Revolution","value":1414}];
+v.size = {width:300, height:300};
+v.gap  = 55;
+v.label_rotation = 45;
+
+v.render();
+
+var vt = Porcelain.VolumeTrendChart('#quack');
+
+vt.data = [{"date":":00","value":143},{"date":":05","value":67},{"date":":10","value":52},{"date":":15","value":48},{"date":":20","value":54},{"date":":25","value":31},{"date":":30","value":54},{"date":":35","value":44},{"date":":40","value":52},{"date":":45","value":39},{"date":":50","value":23},{"date":":55","value":63}];
+vt.size = {width:800, height:200};
+vt.gap  = 25;
+vt.label_rotation = 45;
+vt.focus = [':30'];
+
+vt.render();
+
+
+</script>
+
+</body>
+</html>
