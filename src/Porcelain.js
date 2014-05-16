@@ -59,9 +59,6 @@ Porcelain.prototype.assignChartProperties = function (node, chart) {
 
   for(var c in chart.capabilities) {
     attribute = node.getAttribute('data-'+c.replace('_', '-'));
-    // todo
-    // validate param against capability
-    // should be on the chart level
     if(attribute) chart[c] = attribute;
   }
 
@@ -189,4 +186,8 @@ function searchPrototypeChain(prototype, index) {
 
   return false;
 
+}
+
+function randomColor () {
+  return '#'+Math.floor(Math.random()* 16777216).toString(16);
 }
