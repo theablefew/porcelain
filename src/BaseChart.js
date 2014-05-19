@@ -104,7 +104,7 @@ BaseChart.prototype.defineCapability(
         , description : 'Sets the margins between the chart and the containing dom element. Accepts a object with "top", "right", "bottom" and "left" properties.'
         , default     : {top: 30, right: 30, bottom: 30, left: 30}
         , required    : true
-        , type        : 'object @top:int @right:int @bottom:int @left:int'
+        , type        : 'JSON'
       }
   });
 
@@ -121,7 +121,7 @@ BaseChart.prototype.defineCapability(
         , description : 'Sets the width and height of the chart. Accepts a object with "width" and "height" properties or a string "auto", which sets dimensions to that of the prentent element.'
         , default     : {width: 400, height: 400}
         , required    : true
-        , type        : 'object @width:int,@height:int'
+        , type        : 'JSON'
       }
   });
 
@@ -142,8 +142,8 @@ BaseChart.prototype.defineCapability(
     , descriptor: {
           defined_in  : BaseChart
         , description : 'Color-set for charted data.'
-        , default     : {domain: [], range: [randomColor(), randomColor(), randomColor(), randomColor()], name: {}}
+        , default     : {domain: [], range: [Util.randomColor(), Util.randomColor(), Util.randomColor(), Util.randomColor()], name: {}}
         , required    : false
-        , type        : 'object|array'
+        , type        : 'JSON'
       }
   });

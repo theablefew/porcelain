@@ -32,7 +32,7 @@ Porcelain.prototype.addChart = function (chart, node, type) {
 
 Porcelain.prototype.addChartToRegistry = function (type, constructor) {
 
-  if(!searchPrototypeChain(constructor.prototype, BaseChart.prototype)) throw "Chart: '"+type+"' must inherit from BaseChart";
+  if(!Util.searchPrototypeChain(constructor.prototype, BaseChart.prototype)) throw "Chart: '"+type+"' must inherit from BaseChart";
   if(!constructor.prototype.hasOwnProperty('render')) throw "Chart: '"+type+"' must implement a 'render' method";
   if(this._chart_types[type]) throw "Chart '"+type+"' already defined. Skipping ...";
 
@@ -55,11 +55,21 @@ Porcelain.prototype.addChartToRegistry = function (type, constructor) {
 
 Porcelain.prototype.assignChartProperties = function (node, chart) {
 
-  var attribute;
+  var attribute
+    , capabilities;
+
+  if(node.getAttribute('data-capabilities')) {
+    capabilities = JSON.parse(node.getAttribute('data-capabilities'));
+    for(var c in capabilities) {
+      if(chart.capabilities[c]) chart[c] = capabilities[c];
+    }
+  }
 
   for(var c in chart.capabilities) {
     attribute = node.getAttribute('data-'+c.replace('_', '-'));
-    if(attribute) chart[c] = attribute;
+
+    if(attribute) chart[c] = Util.parseAttribute(attribute, chart, c);
+
   }
 
 };
@@ -75,7 +85,7 @@ Porcelain.prototype.constructDOMCharts = function () {
   for( var i = 0; i < node_list.length; i++) {
     node = node_list[i];
     type = node.getAttribute('data-chart-type');
-    chart = this[titleCase(type)](node);
+    chart = this[Util.titleCase(type)](node);
 
     this.assignChartProperties(node, chart);
     chart.render();
@@ -134,60 +144,3 @@ window.Porcelain = new Porcelain();
 document.addEventListener('DOMContentLoaded', function () {
   Porcelain.init();
 });
-
-
-
-function titleCase (string) {
-  var w = string.split('-')
-    , tc = '';
-  w.forEach(function (e) {
-    tc += e.substr(0, 1).toUpperCase();
-    tc += e.substr(1);
-  });
-  return tc;
-}
-
-function extend (out) {
-  out = out || {};
-
-  for (var i = 1; i < arguments.length; i++) {
-    if (!arguments[i])
-      continue;
-
-    for (var key in arguments[i]) {
-      if (arguments[i].hasOwnProperty(key))
-        out[key] = arguments[i][key];
-    }
-  }
-
-  return out;
-};
-
-function extendChart(new_chart, orig_chart) {
-
-  new_chart.prototype = Object.create(orig_chart.prototype);
-  Object.defineProperties(new_chart.prototype, {
-    'constructor': {
-      value: new_chart
-    },
-    '_capabilities': {
-      value: (function () { return extend({}, orig_chart.prototype.capabilities)})()
-    }
-  });
-
-}
-
-function searchPrototypeChain(prototype, index) {
-
-  while (typeof prototype == 'object' && prototype != Object.prototype) {
-    prototype = Object.getPrototypeOf(prototype);
-    if(prototype == index) return true;
-  }
-
-  return false;
-
-}
-
-function randomColor () {
-  return '#'+Math.floor(Math.random()* 16777216).toString(16);
-}

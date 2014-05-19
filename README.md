@@ -114,7 +114,7 @@ In order for it to be accepted by Porcelain, a chart **must**:
 	};
 
 
-	extendChart(PieChart, BaseChart);
+	Util.extendChart(PieChart, BaseChart);
 
 
 	PieChart.prototype.render = function () {

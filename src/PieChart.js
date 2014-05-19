@@ -28,7 +28,7 @@ function PieChart (element) {
 };
 
 
-extendChart(PieChart, BaseChart);
+Util.extendChart(PieChart, BaseChart);
 
 
 PieChart.prototype.render = function () {

@@ -6,7 +6,7 @@ function VolumeTrendChart (element) {
 }
 
 
-extendChart(VolumeTrendChart, VolumeChart);
+Util.extendChart(VolumeTrendChart, VolumeChart);
 
 
 VolumeTrendChart.prototype.render = function () {

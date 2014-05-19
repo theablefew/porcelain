@@ -37,7 +37,7 @@ function VolumeChart (element) {
 };
 
 
-extendChart(VolumeChart, BaseChart);
+Util.extendChart(VolumeChart, BaseChart);
 
 
 VolumeChart.prototype.render = function () {
@@ -102,7 +102,7 @@ VolumeChart.prototype.defineCapability(
         , description : 'Highlights data on the chart with an alternate color'
         , default     : []
         , required    : false
-        , type        : 'array'
+        , type        : 'JSON'
       }
   });
 

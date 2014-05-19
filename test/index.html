@@ -8,6 +8,7 @@
 <script type="text/javascript" src="js/dc.js"></script>
 
 <script type="text/javascript" src="../src/Porcelain.js"></script>
+<script type="text/javascript" src="../src/Util.js"></script>
 <script type="text/javascript" src="../src/BaseChart.js"></script>
 <script type="text/javascript" src="../src/PieChart.js"></script>
 <script type="text/javascript" src="../src/HorizontalBar.js"></script>
@@ -21,7 +22,11 @@
 
 
 <div id='foo'></div>
-<div id='bar' class='porcelain-chartable' data-chart-type='pie-chart' data-data='[{"key": "baz", "value": 90}, {"key": "qux", "value": 10}]'></div>
+
+<div id='bar' class='porcelain-chartable' data-chart-type='pie-chart' data-radius="50" data-data='[{"key": "baz", "value": 90}, {"key": "qux", "value": 10}]'></div>
+
+<div id='boo' class='porcelain-chartable' data-capabilities='{"radius":75, "data":[{"key": "baz", "value": 90}, {"key": "qux", "value": 10}]}' data-chart-type='pie-chart'></div>
+
 <div id='baz'></div>
 <div id='qux'></div>
 <div id='quack'></div>

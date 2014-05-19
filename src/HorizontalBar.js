@@ -6,7 +6,7 @@ function HorizontalBarChart (element) {
 };
 
 
-extendChart(HorizontalBarChart, BaseChart);
+Util.extendChart(HorizontalBarChart, BaseChart);
 
 
 HorizontalBarChart.prototype.render = function () {
@@ -96,7 +96,7 @@ HorizontalBarChart.prototype.defineCapability(
           , description : 'Array of keys of the data objects which to plot as segments'
           , default     : []
           , required    : true
-          , type        : 'array'
+          , type        : 'JSON'
         }
     });
 
