@@ -26,6 +26,7 @@
 
 * **data-chart-type** - can be "ChartType" or "chart-type"
 * **data-[capability]** - chart capabilities are exposed via the ```data``` attribute. Capabilities should follow ```snake_case``` and are transformed to ```data-snake-case``` on DOM elements.
+* **data-capapbilites** - JSON-formatted string to apply multiple capabilites. 
 
 
 ##Inspection
@@ -81,7 +82,7 @@ Returns the chart capability property descriptor, with the following properties:
 * **defined_in** - Prototype in which the property was defined
 * **description** - Human readable description of property
 * **required** - Boolean, will prevent chart from rendering if not set
-* **type** - Syntax description of the accepted format
+* **type** - Syntax description of the accepted format. Valid types: ```string, int, float, boolean, JSON```
 
 *example*
 
