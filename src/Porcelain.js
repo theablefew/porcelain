@@ -98,8 +98,6 @@ Porcelain.prototype.overrideRenderer = function (constructor) {
 
   var renderer = constructor.prototype.render;
 
-  // delete constructor.prototype.render;
-
   Object.defineProperties(constructor.prototype, {
     'render': {
       value: function () {
@@ -108,9 +106,8 @@ Porcelain.prototype.overrideRenderer = function (constructor) {
 
         this.validate(arguments, function () {
           renderer.apply(this, arguments);
+          if(constructor.prototype.hasOwnProperty('afterRender')) constructor.prototype.afterRender.call(this);
         });
-
-        if(constructor.prototype.hasOwnProperty('afterRender')) constructor.prototype.afterRender.call(this);
       }
     }
   })

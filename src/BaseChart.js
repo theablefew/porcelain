@@ -19,7 +19,19 @@ function BaseChart (element) {
 Object.defineProperties(BaseChart.prototype, {
     validate: {
       value: function (render_args, render) {
-        render.apply(this, render_args);
+        var self = this
+          , valid = true;
+
+        Object.keys(this.capabilities).forEach(function (c) {
+          if (self.capabilities[c].required) {
+            if(!self[c]) {
+              valid = false;
+              console.warn('Required capability "'+c+'" not set, skipping render');
+            }
+          }
+        });
+
+        if(valid) render.apply(this, render_args);
       }
     }
   , _capabilities: {
@@ -28,6 +40,11 @@ Object.defineProperties(BaseChart.prototype, {
   }
   , capabilities: {
       get: function () { return this._capabilities; }
+  }
+  , chart: {
+        get        : function ( ) { return this._chart; }
+      , set        : function (_) { this._chart = _; }
+      , enumerable : false
   }
   , defineCapability: {
       value: function (capability, definition) {
@@ -43,21 +60,6 @@ Object.defineProperties(BaseChart.prototype, {
   }
 });
 
-
-BaseChart.prototype.defineCapability(
-  'chart', {
-      property: {
-          get        : function ( ) { return this._chart; }
-        , set        : function (_) { this._chart = _; }
-        , enumerable : true
-      }
-    , descriptor: {
-          defined_in  : BaseChart
-        , description : 'Chart object, usually SVG'
-        , required    : true
-        , type        : 'object'
-      }
-  });
 
 
 BaseChart.prototype.defineCapability(
