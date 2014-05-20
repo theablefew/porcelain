@@ -7,13 +7,13 @@
 <script type="text/javascript" src="js/crossfilter.js"></script>
 <script type="text/javascript" src="js/dc.js"></script>
 
-<script type="text/javascript" src="../src/Porcelain.js"></script>
-<script type="text/javascript" src="../src/Util.js"></script>
-<script type="text/javascript" src="../src/BaseChart.js"></script>
-<script type="text/javascript" src="../src/PieChart.js"></script>
-<script type="text/javascript" src="../src/HorizontalBar.js"></script>
-<script type="text/javascript" src="../src/VolumeChart.js"></script>
-<script type="text/javascript" src="../src/VolumeTrendChart.js"></script>
+<script type="text/javascript" src="../src/porcelain/Porcelain.js"></script>
+<script type="text/javascript" src="../src/porcelain/Util.js"></script>
+<script type="text/javascript" src="../src/porcelain/BaseChart.js"></script>
+<script type="text/javascript" src="../src/charts/PieChart.js"></script>
+<script type="text/javascript" src="../src/charts/HorizontalBar.js"></script>
+<script type="text/javascript" src="../src/charts/VolumeChart.js"></script>
+<script type="text/javascript" src="../src/charts/VolumeTrendChart.js"></script>
 
 <link rel="stylesheet" type="text/css" href="style/dc.css">
 
@@ -23,7 +23,7 @@
 
 <div id='foo'></div>
 
-<div id='bar' class='porcelain-chartable' data-chart-type='pie-chart' data-radius="50" data-data='[{"key": "baz", "value": 90}, {"key": "qux", "value": 10}]'></div>
+<div id='bar' class='porcelain-chartable' data-inner-radius='20' data-label-offset='30' data-chart-type='pie-chart' data-radius="100" data-data='[{"key": "foo", "value": 5}, {"key": "baz", "value": 85}, {"key": "qux", "value": 10}]'></div>
 
 <div id='boo' class='porcelain-chartable' data-capabilities='{"radius":75, "data":[{"key": "baz", "value": 90}, {"key": "qux", "value": 10}]}' data-chart-type='pie-chart'></div>
 
