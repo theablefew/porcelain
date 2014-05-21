@@ -88,5 +88,4 @@ Util.prototype.titleCase = function (string) {
   return tc;
 };
 
-
-var Util = new Util();
+Util = new Util();

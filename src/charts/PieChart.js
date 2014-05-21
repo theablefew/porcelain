@@ -16,6 +16,11 @@ function PieChart (element) {
 Util.extendChart(PieChart, BaseChart);
 
 
+PieChart.prototype.beforeRender = function () {
+  this.data.sort(function (a, b) { return d3.ascending(a.value, b.value);});
+}
+
+
 PieChart.prototype.render = function () {
 
   var self = this
