@@ -10,6 +10,8 @@
 <script type="text/javascript" src="../src/porcelain/Porcelain.js"></script>
 <script type="text/javascript" src="../src/porcelain/Util.js"></script>
 <script type="text/javascript" src="../src/porcelain/BaseChart.js"></script>
+
+<script type="text/javascript" src="../src/charts/BarChart.js"></script>
 <script type="text/javascript" src="../src/charts/PieChart.js"></script>
 <script type="text/javascript" src="../src/charts/HorizontalBar.js"></script>
 <script type="text/javascript" src="../src/charts/VolumeChart.js"></script>
@@ -17,13 +19,38 @@
 
 <link rel="stylesheet" type="text/css" href="style/dc.css">
 
+<style type='text/css'>
+
+.bar {
+  fill: steelblue;
+}
+
+.labels .label {
+  text-anchor:middle;
+}
+
+.axis text {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+</style>
+
 </head>
 <body>
 
 
 <div id='foo'></div>
 
-<div id='bar' class='porcelain-chartable' data-inner-radius='20' data-label-offset='30' data-chart-type='pie-chart' data-radius="100" data-data='[{"key": "foo", "value": 5}, {"key": "baz", "value": 85}, {"key": "qux", "value": 10}]'></div>
+<div id='bar1' class='porcelain-chartable' data-chart-type='bar-chart' data-labels='true' data-data='[{"key": "foo", "value": 5}, {"key": "baz", "value": 85}, {"key": "qux", "value": 10}]'></div>
+
+<div id='bar2' class='porcelain-chartable' data-inner-radius='20' data-label-offset='30' data-chart-type='pie-chart' data-radius="100" data-data='[{"key": "foo", "value": 5}, {"key": "baz", "value": 85}, {"key": "qux", "value": 10}]'></div>
 
 <div id='boo' class='porcelain-chartable' data-capabilities='{"radius":75, "data":[{"key": "baz", "value": 90}, {"key": "qux", "value": 10}]}' data-chart-type='pie-chart'></div>
 

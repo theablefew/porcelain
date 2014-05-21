@@ -85,7 +85,12 @@ Porcelain.prototype.constructDOMCharts = function () {
   for( var i = 0; i < node_list.length; i++) {
     node = node_list[i];
     type = node.getAttribute('data-chart-type');
-    chart = this[Util.titleCase(type)](node);
+    try {
+      chart = this[Util.titleCase(type)](node);
+    } catch (err) {
+      console.warn('Chart type: "'+type+'" not found. Skipping render');
+      return;
+    }
 
     this.assignChartProperties(node, chart);
     chart.render();
