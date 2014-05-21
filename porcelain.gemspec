@@ -6,11 +6,11 @@ require 'porcelain/version'
 Gem::Specification.new do |spec|
   spec.name          = "porcelain"
   spec.version       = Porcelain::VERSION
-  spec.authors       = ["michaeltomko"]
+  spec.authors       = ["theablefew"]
   spec.email         = ["mike@tomkobombco.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
+  spec.summary       = %q{Generic charting library wrapper}
   spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/theablefew/porcelain/tree/master/src"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")

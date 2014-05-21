@@ -7,10 +7,9 @@
 <script type="text/javascript" src="js/crossfilter.js"></script>
 <script type="text/javascript" src="js/dc.js"></script>
 
-<script type="text/javascript" src="../build/Porcelain.js"></script>
-<!-- <script type="text/javascript" src="../src/porcelain/Porcelain.js"></script> -->
-<!-- <script type="text/javascript" src="../src/porcelain/Util.js"></script> -->
-<!-- <script type="text/javascript" src="../src/porcelain/BaseChart.js"></script> -->
+<script type="text/javascript" src="../src/porcelain/Porcelain.js"></script>
+<script type="text/javascript" src="../src/porcelain/Util.js"></script>
+<script type="text/javascript" src="../src/porcelain/BaseChart.js"></script>
 
 <script type="text/javascript" src="../src/charts/BarChart.js"></script>
 <script type="text/javascript" src="../src/charts/PieChart.js"></script>
@@ -23,7 +22,7 @@
 <style type='text/css'>
 
 .bar {
-  fill: steelblue;
+  fill: blue;
 }
 
 .labels .label {
@@ -49,11 +48,23 @@
 
 <div id='foo'></div>
 
-<div id='bar1' class='porcelain-chartable' data-label-rotation='45' data-chart-type='bar-chart' data-labels='true' data-data='[{"key": "foo", "value": 5}, {"key": "baz", "value": 85}, {"key": "qux", "value": 10}]'></div>
+<div id='bar1' class='porcelain-chartable'
+  data-label-rotation='45'
+  data-chart-type='volume-chart'
+  data-labels='true'
+  data-focus='["baz"]'
+  data-theme='{
+    "bar-normal": "rgba(3,119,177,0.6)",
+    "bar-focus" : "rgba(72,36,120,0.6)",
+    "trend-line": "rgba(245,134,58,0.8)"}'
+  data-data='[
+    {"key": "foo", "value": 5},
+    {"key": "baz", "value": 85},
+    {"key": "qux", "value": 10}]'></div>
 
-<div id='bar2' class='porcelain-chartable' data-inner-radius='20' data-label-offset='30' data-chart-type='pie-chart' data-radius="100" data-data='[{"key": "foo", "value": 5}, {"key": "baz", "value": 85}, {"key": "qux", "value": 10}]'></div>
+<!-- <div id='bar2' class='porcelain-chartable' data-inner-radius='20' data-label-offset='30' data-chart-type='pie-chart' data-radius="100" data-data='[{"key": "foo", "value": 5}, {"key": "baz", "value": 85}, {"key": "qux", "value": 10}]'></div> -->
 
-<div id='boo' class='porcelain-chartable' data-capabilities='{"radius":75, "data":[{"key": "baz", "value": 90}, {"key": "qux", "value": 10}]}' data-chart-type='pie-chart'></div>
+<!-- <div id='boo' class='porcelain-chartable' data-capabilities='{"radius":75, "data":[{"key": "baz", "value": 90}, {"key": "qux", "value": 10}]}' data-chart-type='pie-chart'></div> -->
 
 <div id='baz'></div>
 <div id='qux'></div>
@@ -61,7 +72,7 @@
 
 <script type="text/javascript">
 
-var p = Porcelain.PieChart('#foo');
+/*var p = Porcelain.PieChart('#foo');
 
 p.data = [{key: 'foo', value: 45}, {key: 'bar', value: 55}];
 p.size = {width: 400, height: 400};
@@ -104,7 +115,7 @@ vt.label_rotation = 45;
 vt.focus = [':30'];
 
 vt.render();
-
+*/
 
 </script>
 

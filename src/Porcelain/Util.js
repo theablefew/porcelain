@@ -22,6 +22,9 @@ Util.prototype.formatType = function (value, type) {
     case 'float':
       return parseFloat(value);
       break;
+    case 'JSON': 
+      return JSON.parse(value);
+      break;
     default:
       return value;
   }
