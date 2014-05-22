@@ -14,7 +14,9 @@ Util.extendChart(VolumeChart, BarChart);
 
 
 VolumeChart.prototype.render = function () {
+
   BarChart.prototype.render.call(this);
+  
 }
 
 VolumeChart.prototype.afterRender = function () {

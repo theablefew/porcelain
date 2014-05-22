@@ -70,7 +70,9 @@ BarChart.prototype.render = function () {
     .attr("class", "y axis")
     .call(this.yAxis);
 
-  this.chart.selectAll(".bar")
+  this.chart.append("g")
+      .attr("class", "bars")
+    .selectAll(".bar")
       .data(this.data)
     .enter().append("rect")
       .attr("class", "bar")
