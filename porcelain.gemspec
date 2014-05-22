@@ -6,8 +6,8 @@ require 'porcelain/version'
 Gem::Specification.new do |spec|
   spec.name          = "porcelain"
   spec.version       = Porcelain::VERSION
-  spec.authors       = ["theablefew"]
-  spec.email         = ["mike@tomkobombco.com"]
+  spec.authors       = ["jjluebke"]
+  spec.email         = ["jjluebke@gmail.com"]
   spec.summary       = %q{Generic charting library wrapper}
   spec.description   = %q{TODO: Write a longer description. Optional.}
   spec.homepage      = "https://github.com/theablefew/porcelain/tree/master/src"
