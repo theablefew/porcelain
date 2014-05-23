@@ -1,7 +1,6 @@
 function HorizontalBarChart (element) {
 
-  BaseChart.call(this);
-  this.element = element;
+  BaseChart.call(this, element);
 
 };
 

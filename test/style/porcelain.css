@@ -1,0 +1,27 @@
+.adhoc-chart .axis {
+  font-size: 12px;
+}
+
+.adhoc-chart .axis path, .porcelain-chartable .pie-callout {
+  fill:none;
+  stroke-width:2px;
+  stroke: #000;
+  stroke-opacity: .4;
+}
+
+.porcelain-chartable .axis path,
+.porcelain-chartable .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+
+.adhoc-chart .axis.x text {
+  font-weight: bold;
+}
+
+.adhoc-chart.adhoc-trend path.line {
+  fill:none;
+  stroke-width:6px;
+}

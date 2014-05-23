@@ -1,7 +1,6 @@
 function VolumeChart (element) {
 
-  BarChart.call(this);
-  this.element = element;
+  BarChart.call(this, element);
 
   this._colorAccessor = function (d) {
     if(this.focus.indexOf(d.key) > -1) return 'bar-focus'; return 'bar-normal';

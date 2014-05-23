@@ -4,7 +4,14 @@
   <title>porcelain-charts</title>
 
 <script type="text/javascript" src="js/d3.min.js"></script>
-<script type="text/javascript" src="../vendor/assets/javascripts/Porcelain/Porcelain.js"></script>
+<!-- <script type="text/javascript" src="../vendor/assets/javascripts/Porcelain/Porcelain.js"></script> -->
+
+<script type="text/javascript" src="../src/porcelain/Porcelain.js"></script>
+<script type="text/javascript" src="../src/porcelain/Util.js"></script>
+<script type="text/javascript" src="../src/porcelain/BaseChart.js"></script>
+<script type="text/javascript" src="../src/charts/PieChart.js"></script>
+<script type="text/javascript" src="../src/charts/BarChart.js"></script>
+<script type="text/javascript" src="../src/charts/HorizontalBar.js"></script>
 
 <script type="text/javascript" src="js/VolumeChart.js"></script>
 <script type="text/javascript" src="js/VolumeTrendChart.js"></script>
@@ -54,9 +61,9 @@
     {"key": "baz", "value": 85},
     {"key": "qux", "value": 10}]'></div>
 
-<div id='bar2' class='porcelain-chartable' data-inner-radius='20' data-label-offset='30' data-chart-type='pie-chart' data-radius="100" data-data='[{"key": "foo", "value": 5}, {"key": "baz", "value": 85}, {"key": "qux", "value": 10}]'></div>
+<!-- <div id='bar2' class='porcelain-chartable' data-inner-radius='20' data-label-offset='30' data-chart-type='pie-chart' data-radius="100" data-data='[{"key": "foo", "value": 5}, {"key": "baz", "value": 85}, {"key": "qux", "value": 10}]'></div> -->
 
-<div id='boo' class='porcelain-chartable' data-capabilities='{"radius":75, "data":[{"key": "baz", "value": 90}, {"key": "qux", "value": 10}]}' data-chart-type='pie-chart'></div>
+<!-- <div id='boo' class='porcelain-chartable' data-capabilities='{"radius":75, "data":[{"key": "baz", "value": 90}, {"key": "qux", "value": 10}]}' data-chart-type='pie-chart'></div> -->
 
 <div id='baz'></div>
 <div id='qux'></div>
@@ -64,7 +71,7 @@
 
 <script type="text/javascript">
 
-var p = Porcelain.PieChart('#foo');
+/*var p = Porcelain.PieChart('#foo');
 
 p.data = [{key: 'foo', value: 45}, {key: 'bar', value: 55}];
 p.size = {width: 400, height: 400};
@@ -119,7 +126,7 @@ vt.gap  = 25;
 vt.label_rotation = 45;
 vt.focus = [':30'];
 
-vt.render();
+vt.render();*/
 
 
 </script>

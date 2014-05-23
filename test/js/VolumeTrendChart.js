@@ -1,7 +1,6 @@
 function VolumeTrendChart (element) {
 
-  VolumeChart.call(this);
-  this.element = element;
+  VolumeChart.call(this, element);
 
 }
 

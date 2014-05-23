@@ -1,7 +1,6 @@
 function PieChart (element) {
 
-  BaseChart.call(this);
-  this.element = element;
+  BaseChart.call(this, element);
 
   this._getCentroid = function (d, r) {
     return d3.svg.arc()

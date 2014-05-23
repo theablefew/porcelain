@@ -109,8 +109,7 @@ In order for it to be accepted by Porcelain, a chart **must**:
 
 	function PieChart (element) {
 	
-	  BaseChart.call(this);
-	  this.element = element;
+	  BaseChart.call(this, element);
 	
 	};
 

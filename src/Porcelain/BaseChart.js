@@ -1,5 +1,7 @@
 function BaseChart (element) {
 
+  this.element = element;
+
   this._addCommas = function (str)
   {
     str += '';
