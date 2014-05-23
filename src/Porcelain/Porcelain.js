@@ -1,6 +1,7 @@
 var Porcelain = function () {
 
-  this._chart_selector = '.porcelain-chartable';
+  this._chart_selector = 'porcelain-chartable';
+  this._chart_class    = 'porcelain-chart';
 
   this._chart_types = {};
   this._charts      = [];
@@ -45,11 +46,22 @@ Porcelain.prototype.addChartToRegistry = function (type, constructor) {
   Object.defineProperty(this, type, {
     get: function ( ) { return function (node) {
       chart = new constructor(node);
+
+      this.addClass(node, this._chart_class);
+      this.addClass(node, type);
+
       this.addChart(chart, node, type);
       return  chart;
     }}
   });
   
+};
+
+Porcelain.prototype.addClass = function (node, class_name) {
+
+  if (node.classList) node.classList.add(class_name);
+  else node.className += ' ' + class_name;
+
 };
 
 
@@ -77,7 +89,7 @@ Porcelain.prototype.assignChartProperties = function (node, chart) {
 
 Porcelain.prototype.constructDOMCharts = function () {
 
-  var node_list = document.querySelectorAll(this._chart_selector)
+  var node_list = document.querySelectorAll('.'+this._chart_selector)
     , node
     , type
     , chart;
