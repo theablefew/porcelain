@@ -26,6 +26,9 @@ Porcelain.prototype.addChart = function (chart, node, type) {
     , type    : type
   });
 
+  this.addClass(chart.element, this._chart_class);
+  this.addClass(chart.element, type);
+
   return this._charts.length;
 
 }
@@ -46,9 +49,6 @@ Porcelain.prototype.addChartToRegistry = function (type, constructor) {
   Object.defineProperty(this, type, {
     get: function ( ) { return function (node) {
       chart = new constructor(node);
-
-      this.addClass(node, this._chart_class);
-      this.addClass(node, type);
 
       this.addChart(chart, node, type);
       return  chart;
