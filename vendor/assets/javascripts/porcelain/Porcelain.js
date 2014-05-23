@@ -1,6 +1,7 @@
 var Porcelain = function () {
 
-  this._chart_selector = '.porcelain-chartable';
+  this._chart_selector = 'porcelain-chartable';
+  this._chart_class    = 'porcelain-chart';
 
   this._chart_types = {};
   this._charts      = [];
@@ -25,6 +26,9 @@ Porcelain.prototype.addChart = function (chart, node, type) {
     , type    : type
   });
 
+  this.addClass(chart.element, this._chart_class);
+  this.addClass(chart.element, type);
+
   return this._charts.length;
 
 }
@@ -45,11 +49,19 @@ Porcelain.prototype.addChartToRegistry = function (type, constructor) {
   Object.defineProperty(this, type, {
     get: function ( ) { return function (node) {
       chart = new constructor(node);
+
       this.addChart(chart, node, type);
       return  chart;
     }}
   });
   
+};
+
+Porcelain.prototype.addClass = function (node, class_name) {
+
+  if (node.classList) node.classList.add(class_name);
+  else node.className += ' ' + class_name;
+
 };
 
 
@@ -77,7 +89,7 @@ Porcelain.prototype.assignChartProperties = function (node, chart) {
 
 Porcelain.prototype.constructDOMCharts = function () {
 
-  var node_list = document.querySelectorAll(this._chart_selector)
+  var node_list = document.querySelectorAll('.'+this._chart_selector)
     , node
     , type
     , chart;
@@ -244,6 +256,8 @@ Util = new Util();
 
 function BaseChart (element) {
 
+  this.element = element;
+
   this._addCommas = function (str)
   {
     str += '';
@@ -396,8 +410,7 @@ BaseChart.prototype.defineCapability(
 
 function BarChart (element) {
 
-  BaseChart.call(this);
-  this.element = element;
+  BaseChart.call(this, element);
 
   this._addBarLabels = function () {
 
@@ -525,8 +538,7 @@ BarChart.prototype.defineCapability(
 Porcelain.register('BarChart', BarChart);
 function HorizontalBarChart (element) {
 
-  BaseChart.call(this);
-  this.element = element;
+  BaseChart.call(this, element);
 
 };
 
@@ -632,8 +644,7 @@ HorizontalBarChart.prototype.defineCapability(
 Porcelain.register('HorizontalBarChart', HorizontalBarChart);
 function PieChart (element) {
 
-  BaseChart.call(this);
-  this.element = element;
+  BaseChart.call(this, element);
 
   this._getCentroid = function (d, r) {
     return d3.svg.arc()
@@ -698,7 +709,7 @@ PieChart.prototype.render = function () {
 
   g.append('path')
     .attr('class', 'pie-callout')
-    .attr('d', function (d) {
+    .attr('d', function (d, i) {
       var centroid_outside = self._getCentroid(d, self.label_offset-offset_padding)
         , centroid_inside  = self._getCentroid(d, offset_padding);
 
