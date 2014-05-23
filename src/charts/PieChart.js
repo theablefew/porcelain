@@ -65,7 +65,7 @@ PieChart.prototype.render = function () {
 
   g.append('path')
     .attr('class', 'pie-callout')
-    .attr('d', function (d) {
+    .attr('d', function (d, i) {
       var centroid_outside = self._getCentroid(d, self.label_offset-offset_padding)
         , centroid_inside  = self._getCentroid(d, offset_padding);
 
