@@ -647,11 +647,19 @@ function PieChart (element) {
   BaseChart.call(this, element);
 
   this._getCentroid = function (d, r) {
+
     return d3.svg.arc()
       .outerRadius(this.radius+r)
-      .innerRadius(this.radius+r)
+      .innerRadius((this.label_offset > 0) ? this.radius + r : this.inner_radius)
       .centroid(d);
   };
+
+  this._getMultiplier = function (d, i) {
+
+    if((d.endAngle - d.startAngle) < (Math.PI/180)*10 ) return this.offset_padding*(this.data.length - 1 - i);
+    else return 0;
+
+  }
 
 }
 
@@ -666,16 +674,11 @@ PieChart.prototype.beforeRender = function () {
 
 PieChart.prototype.render = function () {
 
-  var self = this
-    , offset_padding = 10;
+  var self = this;
 
   var arc = d3.svg.arc()
       .outerRadius(this.radius)
       .innerRadius(this.inner_radius);
-
-  var arc_label = d3.svg.arc()
-      .outerRadius(this.radius + this.label_offset*2)
-      .innerRadius((this.label_offset > 0) ? this.radius : this.inner_radius);
 
   var color = d3.scale.ordinal()
       .domain(this.theme.domain)
@@ -701,8 +704,9 @@ PieChart.prototype.render = function () {
       .style("fill", function(d) { return color(d.data.key); });
 
   g.append("text")
-      .attr("transform", function(d) {
-        return "translate(" + arc_label.centroid(d) + ")"; })
+      .attr("transform", function(d, i) {
+        var centroid_outside = self._getCentroid(d, self.label_offset + self._getMultiplier(d, i))
+        return "translate(" + centroid_outside + ")"; })
       .attr("dy", ".35em")
       .style("text-anchor", "middle")
       .text(function(d) { return d.data.key; });
@@ -710,10 +714,9 @@ PieChart.prototype.render = function () {
   g.append('path')
     .attr('class', 'pie-callout')
     .attr('d', function (d, i) {
-      var centroid_outside = self._getCentroid(d, self.label_offset-offset_padding)
-        , centroid_inside  = self._getCentroid(d, offset_padding);
-
-      return d3.svg.line()([centroid_inside, centroid_outside]);
+      var centroid_outside = self._getCentroid(d, self.label_offset-self.offset_padding + self._getMultiplier(d, i))
+        , centroid_inside  = self._getCentroid(d, self.offset_padding, i);
+      if(self.label_offset > 0 ) return d3.svg.line()([centroid_inside, centroid_outside]);
     });
 
 }
@@ -763,6 +766,23 @@ PieChart.prototype.defineCapability(
             defined_in  : PieChart
           , description : 'Measure of how far outside chart to render externalLabels labels'
           , default     : 0
+          , required    : false
+          , type        : 'int'
+        }
+    });
+
+
+PieChart.prototype.defineCapability(
+    'offset_padding', {
+        property: {
+            get        : function ( ) { return this._offset_padding; }
+          , set        : function (_) { this._offset_padding = _; }
+          , enumerable : true
+        }
+      , descriptor: {
+            defined_in  : PieChart
+          , description : 'Padding between line and label'
+          , default     : 10
           , required    : false
           , type        : 'int'
         }

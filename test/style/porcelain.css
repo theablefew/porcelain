@@ -11,3 +11,10 @@
   stroke: #000;
   shape-rendering: crispEdges
 }
+
+
+.porcelain-chart.PieChart .pie-callout {
+
+  stroke: black;
+
+}
