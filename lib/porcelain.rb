@@ -1,4 +1,5 @@
 require "porcelain/version"
+require "porcelain/railtie" if defined?(Rails)
 
 module Porcelain
   module Rails
