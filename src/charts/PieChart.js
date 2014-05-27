@@ -2,6 +2,8 @@ function PieChart (element) {
 
   BaseChart.call(this, element);
 
+  this.count = -1;
+
   this._getCentroid = function (d, r) {
 
     return d3.svg.arc()
@@ -12,8 +14,8 @@ function PieChart (element) {
 
   this._getMultiplier = function (d, i) {
 
-    if((d.endAngle - d.startAngle) < (Math.PI/180)*10 ) return this.offset_padding*(this.data.length - 1 - i);
-    else return 0;
+    if((d.endAngle - d.startAngle) < (Math.PI/180)*10 ) {this.count++; return this.offset_padding*(this.count);}
+    else { return 0;}
 
   }
 
@@ -24,7 +26,7 @@ Util.extendChart(PieChart, BaseChart);
 
 
 PieChart.prototype.beforeRender = function () {
-  this.data.sort(function (a, b) { return d3.ascending(a.value, b.value);});
+  this.data.sort(function (a, b) { return d3.descending(a.value, b.value);});
 }
 
 
@@ -70,7 +72,8 @@ PieChart.prototype.render = function () {
   g.append('path')
     .attr('class', 'pie-callout')
     .attr('d', function (d, i) {
-      var centroid_outside = self._getCentroid(d, self.label_offset-self.offset_padding + self._getMultiplier(d, i))
+      // var centroid_outside = self._getCentroid(d, self.label_offset-self.offset_padding + self._getMultiplier(d, i))
+      var centroid_outside = self._getCentroid(d, self.label_offset-self.offset_padding)
         , centroid_inside  = self._getCentroid(d, self.offset_padding, i);
       if(self.label_offset > 0 ) return d3.svg.line()([centroid_inside, centroid_outside]);
     });
