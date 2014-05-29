@@ -32,7 +32,8 @@ PieChart.prototype.beforeRender = function () {
 
 PieChart.prototype.render = function () {
 
-  var self = this;
+  var self = this
+    , padding = 10;
 
   var arc = d3.svg.arc()
       .outerRadius(this.radius)
@@ -73,8 +74,8 @@ PieChart.prototype.render = function () {
     .attr('class', 'pie-callout')
     .attr('d', function (d, i) {
       // var centroid_outside = self._getCentroid(d, self.label_offset-self.offset_padding + self._getMultiplier(d, i))
-      var centroid_outside = self._getCentroid(d, self.label_offset-self.offset_padding)
-        , centroid_inside  = self._getCentroid(d, self.offset_padding, i);
+      var centroid_outside = self._getCentroid(d, self.label_offset-padding)
+        , centroid_inside  = self._getCentroid(d, padding, i);
       if(self.label_offset > 0 ) return d3.svg.line()([centroid_inside, centroid_outside]);
     });
 
@@ -141,7 +142,7 @@ PieChart.prototype.defineCapability(
       , descriptor: {
             defined_in  : PieChart
           , description : 'Padding between line and label'
-          , default     : 10
+          , default     : 15
           , required    : false
           , type        : 'int'
         }

@@ -84,7 +84,7 @@ BaseChart.prototype.defineCapability(
   'element', {
       property: {
           get        : function ( ) { return this._element; }
-        , set        : function (_) { this._element = (typeof _ == 'string') ? document.querySelectorAll(_)[0] : _; }
+        , set        : function (_) { this._element = (typeof _ == 'string') ? document.querySelector(_) : _; }
         , enumerable : true
       }
     , descriptor: {

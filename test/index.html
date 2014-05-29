@@ -15,6 +15,7 @@
 
 <script type="text/javascript" src="js/VolumeChart.js"></script>
 <script type="text/javascript" src="js/VolumeTrendChart.js"></script>
+<script type="text/javascript" src="js/EffScore.js"></script>
 
 <link rel="stylesheet" type="text/css" href="../vendor/assets/stylesheets/porcelain.css">
 
@@ -23,8 +24,9 @@
 
 
 <div id='foo'></div>
+<div id='mobile-legend'></div>
 
-<!-- <div id='bar1' class='porcelain-chartable'
+<div id='bar1' class='porcelain-chartable'
   data-label-rotation='45'
   data-chart-type='volume-chart'
   data-labels='true'
@@ -36,11 +38,11 @@
   data-data='[
     {"key": "foo", "value": 5},
     {"key": "baz", "value": 85},
-    {"key": "qux", "value": 10}]'></div> -->
+    {"key": "qux", "value": 10}]'></div>
 
-<!-- <div id='bar2' class='porcelain-chartable' data-inner-radius='20' data-label-offset='30' data-chart-type='pie-chart' data-radius="100" data-data='[{"key": "foo", "value": 5}, {"key": "baz", "value": 85}, {"key": "qux", "value": 10}]'></div> -->
+<div id='bar2' class='porcelain-chartable' data-inner-radius='20' data-label-offset='30' data-chart-type='pie-chart' data-radius="100" data-data='[{"key": "foo", "value": 5}, {"key": "baz", "value": 85}, {"key": "qux", "value": 10}]'></div>
 
-<!-- <div id='boo' class='porcelain-chartable' data-capabilities='{"radius":75, "data":[{"key": "baz", "value": 90}, {"key": "qux", "value": 10}]}' data-chart-type='pie-chart'></div> -->
+<div id='boo' class='porcelain-chartable' data-capabilities='{"radius":75, "data":[{"key": "baz", "value": 90}, {"key": "qux", "value": 10}]}' data-chart-type='pie-chart'></div>
 
 <div id='baz'></div>
 <div id='qux'></div>
@@ -48,17 +50,7 @@
 
 <script type="text/javascript">
 
-var p = Porcelain.PieChart('#foo');
-
-p.data = [{key: 'asdf', value: 80}, {key: 'foo', value: 1}, {key: 'bar', value: 2}, {key:'baz', value: 22}, {key: 'the able few', value: 1}];
-p.size = {width: 400, height: 400};
-p.radius = 100;
-p.label_offset = 30;
-
-p.render('foobar', 'bazqux');
-
-
-/*var sentiment_theme = {
+var sentiment_theme = {
   'foo' : 'rgba(151, 199, 63, 0.6)',
   'bar' : 'rgba(195, 39, 97, 0.6)',
   'baz' : 'rgba(227, 223, 189, 0.6)',
@@ -104,7 +96,7 @@ vt.gap  = 25;
 vt.label_rotation = 45;
 vt.focus = [':30'];
 
-vt.render();*/
+vt.render();
 
 
 </script>
