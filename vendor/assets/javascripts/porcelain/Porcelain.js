@@ -340,7 +340,7 @@ BaseChart.prototype.defineCapability(
   'element', {
       property: {
           get        : function ( ) { return this._element; }
-        , set        : function (_) { this._element = (typeof _ == 'string') ? document.querySelectorAll(_)[0] : _; }
+        , set        : function (_) { this._element = (typeof _ == 'string') ? document.querySelector(_) : _; }
         , enumerable : true
       }
     , descriptor: {
@@ -646,6 +646,8 @@ function PieChart (element) {
 
   BaseChart.call(this, element);
 
+  this.count = -1;
+
   this._getCentroid = function (d, r) {
 
     return d3.svg.arc()
@@ -656,8 +658,8 @@ function PieChart (element) {
 
   this._getMultiplier = function (d, i) {
 
-    if((d.endAngle - d.startAngle) < (Math.PI/180)*10 ) return this.offset_padding*(this.data.length - 1 - i);
-    else return 0;
+    if((d.endAngle - d.startAngle) < (Math.PI/180)*10 ) {this.count++; return this.offset_padding*(this.count);}
+    else { return 0;}
 
   }
 
@@ -668,13 +670,14 @@ Util.extendChart(PieChart, BaseChart);
 
 
 PieChart.prototype.beforeRender = function () {
-  this.data.sort(function (a, b) { return d3.ascending(a.value, b.value);});
+  this.data.sort(function (a, b) { return d3.descending(a.value, b.value);});
 }
 
 
 PieChart.prototype.render = function () {
 
-  var self = this;
+  var self = this
+    , padding = 10;
 
   var arc = d3.svg.arc()
       .outerRadius(this.radius)
@@ -714,8 +717,9 @@ PieChart.prototype.render = function () {
   g.append('path')
     .attr('class', 'pie-callout')
     .attr('d', function (d, i) {
-      var centroid_outside = self._getCentroid(d, self.label_offset-self.offset_padding + self._getMultiplier(d, i))
-        , centroid_inside  = self._getCentroid(d, self.offset_padding, i);
+      // var centroid_outside = self._getCentroid(d, self.label_offset-self.offset_padding + self._getMultiplier(d, i))
+      var centroid_outside = self._getCentroid(d, self.label_offset-padding)
+        , centroid_inside  = self._getCentroid(d, padding, i);
       if(self.label_offset > 0 ) return d3.svg.line()([centroid_inside, centroid_outside]);
     });
 
@@ -782,7 +786,7 @@ PieChart.prototype.defineCapability(
       , descriptor: {
             defined_in  : PieChart
           , description : 'Padding between line and label'
-          , default     : 10
+          , default     : 15
           , required    : false
           , type        : 'int'
         }
