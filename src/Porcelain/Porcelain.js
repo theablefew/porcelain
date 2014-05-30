@@ -3,8 +3,9 @@ var Porcelain = function () {
   this._chart_selector = 'porcelain-chartable';
   this._chart_class    = 'porcelain-chart';
 
-  this._chart_types = {};
-  this._charts      = [];
+  this._chart_types    = {};
+  this._charts         = [];
+  this._plugin_types   = {};
 
   this.init();
 
@@ -54,7 +55,7 @@ Porcelain.prototype.addChartToRegistry = function (type, constructor) {
       return  chart;
     }}
   });
-  
+
 };
 
 Porcelain.prototype.addClass = function (node, class_name) {
@@ -62,6 +63,30 @@ Porcelain.prototype.addClass = function (node, class_name) {
   if (node.classList) node.classList.add(class_name);
   else node.className += ' ' + class_name;
 
+};
+
+
+Porcelain.prototype.addPluginToRegistry = function (type, constructor) {
+
+  // if(!Util.searchPrototypeChain(constructor.prototype, BaseChart.prototype)) throw "Chart: '"+type+"' must inherit from BaseChart";
+  // if(!constructor.prototype.hasOwnProperty('render')) throw "Chart: '"+type+"' must implement a 'render' method";
+  if(this._plugin_types[type]) throw "Plugin '"+type+"' already defined. Skipping ...";
+
+
+  var plugin;
+
+  // this.overrideRenderer(constructor);
+
+  this._plugin_types[type] = constructor;
+  Object.defineProperty(this, type, {
+    get: function ( ) { return function (options) {
+      plugin = new constructor(options);
+
+      // this.addChart(chart, node, type);
+      return  plugin;
+    }}
+  });
+  
 };
 
 
@@ -140,6 +165,14 @@ Porcelain.prototype.register = function (type, constructor) {
 };
 
 
+Porcelain.prototype.registerPlugin = function (type, constructor) {
+
+  try         { this.addPluginToRegistry(type, constructor); }
+  catch (err) { console.warn(err); }
+
+};
+
+
 Object.defineProperties(Porcelain.prototype, {
 
     'charts': {
@@ -147,7 +180,10 @@ Object.defineProperties(Porcelain.prototype, {
     }
   , 'types': {
       get: function () { return this._chart_types; }
-  }
+    }
+  , 'plugins': {
+      get: function () { return this._plugin_types; }
+    }
 
 });
 
