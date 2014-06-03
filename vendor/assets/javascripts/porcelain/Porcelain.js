@@ -3,8 +3,9 @@ var Porcelain = function () {
   this._chart_selector = 'porcelain-chartable';
   this._chart_class    = 'porcelain-chart';
 
-  this._chart_types = {};
-  this._charts      = [];
+  this._chart_types    = {};
+  this._charts         = [];
+  this._plugin_types   = {};
 
   this.init();
 
@@ -54,7 +55,7 @@ Porcelain.prototype.addChartToRegistry = function (type, constructor) {
       return  chart;
     }}
   });
-  
+
 };
 
 Porcelain.prototype.addClass = function (node, class_name) {
@@ -62,6 +63,30 @@ Porcelain.prototype.addClass = function (node, class_name) {
   if (node.classList) node.classList.add(class_name);
   else node.className += ' ' + class_name;
 
+};
+
+
+Porcelain.prototype.addPluginToRegistry = function (type, constructor) {
+
+  // if(!Util.searchPrototypeChain(constructor.prototype, BaseChart.prototype)) throw "Chart: '"+type+"' must inherit from BaseChart";
+  // if(!constructor.prototype.hasOwnProperty('render')) throw "Chart: '"+type+"' must implement a 'render' method";
+  if(this._plugin_types[type]) throw "Plugin '"+type+"' already defined. Skipping ...";
+
+
+  var plugin;
+
+  // this.overrideRenderer(constructor);
+
+  this._plugin_types[type] = constructor;
+  Object.defineProperty(this, type, {
+    get: function ( ) { return function (options) {
+      plugin = new constructor(options);
+
+      // this.addChart(chart, node, type);
+      return  plugin;
+    }}
+  });
+  
 };
 
 
@@ -119,11 +144,20 @@ Porcelain.prototype.overrideRenderer = function (constructor) {
     'render': {
       value: function () {
 
-        if(constructor.prototype.hasOwnProperty('beforeRender')) constructor.prototype.beforeRender.call(this);
+        if(constructor.prototype.hasOwnProperty('beforeRender')) {
+          constructor.prototype.beforeRender.call(this);
+          this.element.dispatchEvent(new Event('beforeRender'));
+        }
 
         this.validate(arguments, function () {
           renderer.apply(this, arguments);
-          if(constructor.prototype.hasOwnProperty('afterRender')) constructor.prototype.afterRender.call(this);
+          this.element.dispatchEvent(new Event('render'));
+
+          if(constructor.prototype.hasOwnProperty('afterRender')) {
+            constructor.prototype.afterRender.call(this);
+            this.element.dispatchEvent(new Event('afterRender'));
+          }
+          
         });
       }
     }
@@ -140,6 +174,14 @@ Porcelain.prototype.register = function (type, constructor) {
 };
 
 
+Porcelain.prototype.registerPlugin = function (type, constructor) {
+
+  try         { this.addPluginToRegistry(type, constructor); }
+  catch (err) { console.warn(err); }
+
+};
+
+
 Object.defineProperties(Porcelain.prototype, {
 
     'charts': {
@@ -147,7 +189,10 @@ Object.defineProperties(Porcelain.prototype, {
     }
   , 'types': {
       get: function () { return this._chart_types; }
-  }
+    }
+  , 'plugins': {
+      get: function () { return this._plugin_types; }
+    }
 
 });
 
@@ -258,19 +303,6 @@ function BaseChart (element) {
 
   this.element = element;
 
-  this._addCommas = function (str)
-  {
-    str += '';
-    x = str.split('.');
-    x1 = x[0];
-    x2 = x.length > 1 ? '.' + x[1] : '';
-    var rgx = /(\d+)(\d{3})/;
-    while (rgx.test(x1)) {
-      x1 = x1.replace(rgx, '$1' + ',' + '$2');
-    }
-    return x1 + x2;
-  }
-
 };
 
 
@@ -292,6 +324,17 @@ Object.defineProperties(BaseChart.prototype, {
         if(valid) render.apply(this, render_args);
       }
     }
+  , _activatePlugins: {
+      value: function (plugins) {
+        for(var p in plugins) {
+          if(!Porcelain.plugins[p]) {
+            console.warn('Plugin "'+p+'" not registered with Porcelain, skipping plugin initialization');
+            continue;
+          }
+          plugins[p].instance = new Porcelain.plugins[p](this, plugins[p]);
+        }
+    }
+  } 
   , _capabilities: {
         writable: true
       , value   : {}
@@ -364,6 +407,24 @@ BaseChart.prototype.defineCapability(
         , description : 'Sets the margins between the chart and the containing dom element. Accepts a object with "top", "right", "bottom" and "left" properties.'
         , default     : {top: 30, right: 30, bottom: 30, left: 30}
         , required    : true
+        , type        : 'JSON'
+      }
+  });
+
+
+BaseChart.prototype.defineCapability(
+  'plugins', {
+      property: {
+          get: function ( ) { return this._plugins; }
+        , set: function (_) { this._activatePlugins(_); this._plugins = _;
+          }
+        , enumerable: true
+      }
+    , descriptor: {
+          defined_in  : BaseChart
+        , description : 'Attaches the chart instance to the plugin passing options.'
+        , default     : {}
+        , required    : false
         , type        : 'JSON'
       }
   });

@@ -1,32 +1,37 @@
-function Callout () {
+function Callout (chart, options) {
+
+  var keyFormatter   = options.keyFormatter   || function (d) { return d.key;   }
+    , valueFormatter = options.valueFormatter || function (d) { return d.value; }
+    , pointer_timeout
+    , self = this;
+
+  chart.element.addEventListener('afterRender', function () {
+    self.enablePointer(chart, options.selector, keyFormatter, valueFormatter);
+  })
 
 }
 
 Callout.prototype.drawPointer = function (chart, x, y, text, val) {
 
-  text = toTitleCase(text);
-  var w = 70,
-      h = 45,
-      padding = 10,
-      font_size = 11,
-      callout = chart.select('svg').append('g')
+  text = Util.titleCase(text);
+  var w = 70
+    , h = 45
+    , padding = 10
+    , font_size = 11
+    , callout = d3.select(chart.element).select('svg').append('g')
         .attr('class', 'callout')
-        .style("opacity",0),
-      pointer = callout.append('rect')
+        .style("opacity",0)
+    , pointer = callout.append('rect')
         .attr('class', 'pointer')
-        .attr('height', h),
-      title = callout.append('text')
+        .attr('height', h)
+    , title = callout.append('text')
         .attr('class', 'callout-title')
         .text(text)
-        .attr('x', padding),
-      w = Math.max(title[0][0].getBoundingClientRect().width + padding * 2, w),
-      x_offset = (x <= chart.width()/2) ? 0 : w ,
-      y_offset = (y <= chart.height()/2) ? 2*h : 0,
-      points = w/2-padding+','+h+' '+
-        + parseInt(x_offset)+','+ parseInt(0-y_offset + h*2) +' '
-        + parseInt(w/2+padding)+','+h;
-
-      points = w/2-padding+','+h+' '+
+        .attr('x', padding)
+    , w = Math.max(title[0][0].getBoundingClientRect().width + padding * 2, w)
+    , x_offset = (x <= chart.size.width/2) ? 0 : w 
+    , y_offset = (y <= chart.size.height/2) ? 2*h : 0
+    , points = w/2-padding+','+h+' '+
         + parseInt(x_offset)+','+ parseInt(0-y_offset + h*2) +' '
         + parseInt(w/2+padding)+','+h;
 
@@ -67,20 +72,21 @@ Callout.prototype.removePointer = function () {
 
 Callout.prototype.enablePointer = function (chart, selector, keyFormatter, valueFormatter) {
 
-  chart.selectAll(selector)
+  var self = this;
+
+  chart.chart.selectAll(selector)
     .each(function (d){
       this.addEventListener('mouseover', function (e) {
-            var _this = this;
-            pointerTimeout = setTimeout(function () {
-              drawPointer(chart, e.offsetX, e.offsetY, keyFormatter(d), valueFormatter(d));
-            }, 100);
-          });
-          this.addEventListener('mouseout', function () {
-            clearTimeout(pointerTimeout);
-            removePointer();
-          })
+        self.pointer_timeout = setTimeout(function () {
+          self.drawPointer(chart, e.offsetX, e.offsetY, keyFormatter(d), valueFormatter(d));
+        }, 100);
+      });
+      this.addEventListener('mouseout', function () {
+        clearTimeout(self.pointer_timeout);
+        self.removePointer();
+      })
     });
-
 };
+
 
 Porcelain.registerPlugin('Callout', Callout);

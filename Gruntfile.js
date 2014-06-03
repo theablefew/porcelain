@@ -6,12 +6,12 @@ module.exports = function(grunt) {
       options: {},
       dist: {
         src: [
-            'src/porcelain/Porcelain.js'
-          , 'src/porcelain/Util.js'
-          , 'src/porcelain/BaseChart.js'
-          , 'src/charts/BarChart.js'
-          , 'src/charts/HorizontalBar.js'
-          , 'src/charts/PieChart.js'
+            'src/porcelain/porcelain.js'
+          , 'src/porcelain/util.js'
+          , 'src/porcelain/base_chart.js'
+          , 'src/charts/bar_chart.js'
+          , 'src/charts/horizontal_bar.js'
+          , 'src/charts/pie_chart.js'
         ],
         dest: 'vendor/assets/javascripts/<%= pkg.name %>/<%= pkg.name %>.js',
       }

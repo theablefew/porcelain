@@ -23,6 +23,17 @@ Object.defineProperties(BaseChart.prototype, {
         if(valid) render.apply(this, render_args);
       }
     }
+  , _activatePlugins: {
+      value: function (plugins) {
+        for(var p in plugins) {
+          if(!Porcelain.plugins[p]) {
+            console.warn('Plugin "'+p+'" not registered with Porcelain, skipping plugin initialization');
+            continue;
+          }
+          plugins[p].instance = new Porcelain.plugins[p](this, plugins[p]);
+        }
+    }
+  } 
   , _capabilities: {
         writable: true
       , value   : {}
@@ -95,6 +106,24 @@ BaseChart.prototype.defineCapability(
         , description : 'Sets the margins between the chart and the containing dom element. Accepts a object with "top", "right", "bottom" and "left" properties.'
         , default     : {top: 30, right: 30, bottom: 30, left: 30}
         , required    : true
+        , type        : 'JSON'
+      }
+  });
+
+
+BaseChart.prototype.defineCapability(
+  'plugins', {
+      property: {
+          get: function ( ) { return this._plugins; }
+        , set: function (_) { this._activatePlugins(_); this._plugins = _;
+          }
+        , enumerable: true
+      }
+    , descriptor: {
+          defined_in  : BaseChart
+        , description : 'Attaches the chart instance to the plugin passing options.'
+        , default     : {}
+        , required    : false
         , type        : 'JSON'
       }
   });

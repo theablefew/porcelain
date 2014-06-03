@@ -6,18 +6,18 @@
 <script type="text/javascript" src="js/d3.min.js"></script>
 <!-- <script type="text/javascript" src="../vendor/assets/javascripts/Porcelain/Porcelain.js"></script> -->
 
-<script type="text/javascript" src="../src/porcelain/Porcelain.js"></script>
-<script type="text/javascript" src="../src/porcelain/Util.js"></script>
-<script type="text/javascript" src="../src/porcelain/BaseChart.js"></script>
-<script type="text/javascript" src="../src/charts/PieChart.js"></script>
-<script type="text/javascript" src="../src/charts/BarChart.js"></script>
-<script type="text/javascript" src="../src/charts/HorizontalBar.js"></script>
+<script type="text/javascript" src="../src/porcelain/porcelain.js"></script>
+<script type="text/javascript" src="../src/porcelain/util.js"></script>
+<script type="text/javascript" src="../src/porcelain/base_chart.js"></script>
+<script type="text/javascript" src="../src/charts/pie_chart.js"></script>
+<script type="text/javascript" src="../src/charts/bar_chart.js"></script>
+<script type="text/javascript" src="../src/charts/horizontal_bar.js"></script>
 
-<script type="text/javascript" src="js/VolumeChart.js"></script>
-<script type="text/javascript" src="js/VolumeTrendChart.js"></script>
-<script type="text/javascript" src="js/EffScore.js"></script>
+<script type="text/javascript" src="js/volume_chart.js"></script>
+<script type="text/javascript" src="js/volume_trend_chart.js"></script>
+<script type="text/javascript" src="js/eff_score.js"></script>
 
-<script type="text/javascript" src="../src/plugins/Callout.js"></script>
+<script type="text/javascript" src="../src/plugins/callout.js"></script>
 
 <link rel="stylesheet" type="text/css" href="../vendor/assets/stylesheets/porcelain.css">
 
@@ -28,7 +28,7 @@
 <div id='foo'></div>
 <div id='mobile-legend'></div>
 
-<div id='bar1' class='porcelain-chartable'
+<!-- <div id='bar1' class='porcelain-chartable'
   data-label-rotation='45'
   data-chart-type='volume-chart'
   data-labels='true'
@@ -40,11 +40,11 @@
   data-data='[
     {"key": "foo", "value": 5},
     {"key": "baz", "value": 85},
-    {"key": "qux", "value": 10}]'></div>
+    {"key": "qux", "value": 10}]'></div> -->
 
-<div id='bar2' class='porcelain-chartable' data-inner-radius='20' data-label-offset='30' data-chart-type='pie-chart' data-radius="100" data-data='[{"key": "foo", "value": 5}, {"key": "baz", "value": 85}, {"key": "qux", "value": 10}]'></div>
+<!-- <div id='bar2' class='porcelain-chartable' data-inner-radius='20' data-label-offset='30' data-chart-type='pie-chart' data-radius="100" data-data='[{"key": "foo", "value": 5}, {"key": "baz", "value": 85}, {"key": "qux", "value": 10}]'></div> -->
 
-<div id='boo' class='porcelain-chartable' data-capabilities='{"radius":75, "data":[{"key": "baz", "value": 90}, {"key": "qux", "value": 10}]}' data-chart-type='pie-chart'></div>
+<!-- <div id='boo' class='porcelain-chartable' data-capabilities='{"radius":75, "data":[{"key": "baz", "value": 90}, {"key": "qux", "value": 10}]}' data-chart-type='pie-chart'></div> -->
 
 <div id='baz'></div>
 <div id='qux'></div>
@@ -52,7 +52,7 @@
 
 <script type="text/javascript">
 
-var sentiment_theme = {
+/*var sentiment_theme = {
   'foo' : 'rgba(151, 199, 63, 0.6)',
   'bar' : 'rgba(195, 39, 97, 0.6)',
   'baz' : 'rgba(227, 223, 189, 0.6)',
@@ -66,7 +66,7 @@ h.categories = ["foo", "bar", "baz", "qux"];
 h.size       = {width: 800, height: 200};
 h.theme      = sentiment_theme;
 
-h.render();
+h.render();*/
 
 var v = Porcelain.VolumeChart('#qux');
 
@@ -74,10 +74,11 @@ v.data = [{"key":"S.H.I.E.L.D.","value":6651},{"key":"The Blacklist","value":326
 v.size = {width:300, height:300};
 v.gap  = 55;
 v.label_rotation = 45;
+v.plugins = {Callout: {selector:'.bar'}}
 
 v.render();
 
-var vt = Porcelain.VolumeTrendChart('#quack');
+/*var vt = Porcelain.VolumeTrendChart('#quack');
 
 vt.data = [
     {"key":":00","value":143}
@@ -99,7 +100,7 @@ vt.label_rotation = 45;
 vt.focus = [':30'];
 
 vt.render();
-
+*/
 
 </script>
 

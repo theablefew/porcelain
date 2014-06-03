@@ -144,11 +144,20 @@ Porcelain.prototype.overrideRenderer = function (constructor) {
     'render': {
       value: function () {
 
-        if(constructor.prototype.hasOwnProperty('beforeRender')) constructor.prototype.beforeRender.call(this);
+        if(constructor.prototype.hasOwnProperty('beforeRender')) {
+          constructor.prototype.beforeRender.call(this);
+          this.element.dispatchEvent(new Event('beforeRender'));
+        }
 
         this.validate(arguments, function () {
           renderer.apply(this, arguments);
-          if(constructor.prototype.hasOwnProperty('afterRender')) constructor.prototype.afterRender.call(this);
+          this.element.dispatchEvent(new Event('render'));
+
+          if(constructor.prototype.hasOwnProperty('afterRender')) {
+            constructor.prototype.afterRender.call(this);
+            this.element.dispatchEvent(new Event('afterRender'));
+          }
+          
         });
       }
     }
