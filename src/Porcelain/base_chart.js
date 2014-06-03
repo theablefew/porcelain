@@ -31,6 +31,9 @@ Object.defineProperties(BaseChart.prototype, {
             continue;
           }
           plugins[p].instance = new Porcelain.plugins[p](this, plugins[p]);
+          Object.defineProperty (this, p, {
+            value : plugins[p].instance
+          });
         }
     }
   } 

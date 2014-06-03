@@ -5,8 +5,8 @@ function Callout (chart, options) {
     , pointer_timeout
     , self = this;
 
-  chart.element.addEventListener('afterRender', function () {
-    self.enablePointer(chart, options.selector, keyFormatter, valueFormatter);
+  chart.element.addEventListener('afterRender', function (e) {
+    if(Object.getPrototypeOf(chart) == e.detail) self.enablePointer(chart, options.selector, keyFormatter, valueFormatter);
   })
 
 }
