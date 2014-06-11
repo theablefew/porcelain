@@ -12,6 +12,8 @@ VolumeTrendChart.prototype.render = function () {
 
   var self = this;
 
+  console.log(this);
+
   VolumeChart.prototype.render.call(this);
 
   var path = d3.svg.line()
@@ -23,7 +25,8 @@ VolumeTrendChart.prototype.render = function () {
       .attr("transform", "translate("+self.x.rangeBand()/2+", 0)")
     .append("path")
       .datum(this.data)
-      .attr("d", path);
+      .attr("d", path)
+      .attr("stroke", function (d) { return self.color('trend-line'); });
 
 };
 

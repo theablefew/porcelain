@@ -135,14 +135,14 @@ BaseChart.prototype.defineCapability(
 BaseChart.prototype.defineCapability(
   'size', {
       property: {
-          get        : function ( ) { return this._size; }
-        , set        : function (_) { this._size = (_ == 'auto') ? {width: _el.offsetWidth, height: _el.offsetHeight} : _; }
+          get        : function ( ) { return (!this._size) ? {width: this._element.offsetWidth, height: this._element.offsetHeight} : this._size; }
+        , set        : function (_) { this._size = _; }
         , enumerable : true
       }
     , descriptor: {
           defined_in  : BaseChart
         , description : 'Sets the width and height of the chart. Accepts a object with "width" and "height" properties or a string "auto", which sets dimensions to that of the prentent element.'
-        , default     : {width: 400, height: 400}
+        , default     : null
         , required    : true
         , type        : 'JSON'
       }

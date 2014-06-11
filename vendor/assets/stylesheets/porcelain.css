@@ -12,6 +12,11 @@
   shape-rendering: crispEdges
 }
 
+.porcelain-chart .trend-line  path {
+  fill:none;
+  stroke-width:6px;
+}
+
 
 .porcelain-chart.PieChart .pie-callout {
 
