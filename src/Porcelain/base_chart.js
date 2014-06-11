@@ -95,7 +95,7 @@ BaseChart.prototype.defineCapability(
           defined_in  : BaseChart
         , description : 'Data passed into the chart'
         , required    : true
-        , type        : 'JSON'
+        , type        : 'array'
       }
   });
 
@@ -111,7 +111,7 @@ BaseChart.prototype.defineCapability(
           defined_in  : BaseChart
         , description : 'Element into which to draw the chart. The element passed is either a selector string or a DOM element reference'
         , required    : true
-        , type        : 'string|element'
+        , type        : 'string'
       }
   });
 
@@ -128,7 +128,7 @@ BaseChart.prototype.defineCapability(
         , description : 'Sets the margins between the chart and the containing dom element. Accepts a object with "top", "right", "bottom" and "left" properties.'
         , default     : {top: 30, right: 30, bottom: 30, left: 30}
         , required    : true
-        , type        : 'JSON'
+        , type        : 'object'
       }
   });
 
@@ -146,7 +146,7 @@ BaseChart.prototype.defineCapability(
         , description : 'Attaches the chart instance to the plugin passing options.'
         , default     : {}
         , required    : false
-        , type        : 'JSON'
+        , type        : 'object'
       }
   });
 
@@ -165,7 +165,7 @@ BaseChart.prototype.defineCapability(
         , description : 'Sets the width and height of the chart. Accepts a object with "width" and "height" properties or a string "auto", which sets dimensions to that of the prentent element.'
         , default     : {}
         , required    : true
-        , type        : 'JSON'
+        , type        : 'object'
       }
   });
 
@@ -188,6 +188,6 @@ BaseChart.prototype.defineCapability(
         , description : 'Color-set for charted data.'
         , default     : {domain: [], range: [Util.randomColor(), Util.randomColor(), Util.randomColor(), Util.randomColor()], name: {}}
         , required    : false
-        , type        : 'JSON'
+        , type        : 'object'
       }
   });

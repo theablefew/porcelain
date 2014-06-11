@@ -120,7 +120,7 @@ BarChart.prototype.defineCapability(
         , description : 'Degrees of which to rotate the labels on the x axis'
         , default     : 0
         , required    : false
-        , type        : 'int'
+        , type        : 'number'
       }
   });
 
