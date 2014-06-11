@@ -30,7 +30,7 @@
 <div id='foo'></div>
 <div id='mobile-legend'></div>
 
-<div style='width:800px; height:200px;' id='bar1' class='porcelain-chartable'
+<!-- <div style='width:800px; height:200px;' id='bar1' class='porcelain-chartable'
   data-label-rotation='45'
   data-chart-type='volume-chart'
   data-labels='true'
@@ -42,19 +42,19 @@
   data-data='[
     {"key": "foo", "value": 5},
     {"key": "baz", "value": 85},
-    {"key": "qux", "value": 10}]'></div>
+    {"key": "qux", "value": 10}]'></div> -->
 
 <!-- <div id='bar2' class='porcelain-chartable' data-inner-radius='20' data-label-offset='30' data-chart-type='pie-chart' data-radius="100" data-data='[{"key": "foo", "value": 5}, {"key": "baz", "value": 85}, {"key": "qux", "value": 10}]'></div> -->
 
 <!-- <div id='boo' class='porcelain-chartable' data-capabilities='{"radius":75, "data":[{"key": "baz", "value": 90}, {"key": "qux", "value": 10}]}' data-chart-type='pie-chart'></div> -->
 
-<div style='width:600px; height:100px;' id='baz'></div>
+<div style='width:600px; height:600px;' id='baz'></div>
 <div id='qux'></div>
 <div id='quack'></div>
 
 <script type="text/javascript">
 
-/*var sentiment_theme = {
+var sentiment_theme = {
   'foo' : 'rgba(151, 199, 63, 0.6)',
   'bar' : 'rgba(195, 39, 97, 0.6)',
   'baz' : 'rgba(227, 223, 189, 0.6)',
@@ -65,10 +65,9 @@ var h = Porcelain.HorizontalBarChart('#baz');
 
 h.data       = [{"foo": 10, "bar": 45, "baz": 30, "qux":20}];
 h.categories = ["foo", "bar", "baz", "qux"];
-// h.size       = {width: 800, height: 200};
 h.theme      = sentiment_theme;
 
-h.render();*/
+h.render();
 
 /*var v = Porcelain.VolumeChart('#qux');
 
