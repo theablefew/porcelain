@@ -6,7 +6,9 @@ function BarChart (element) {
 
     var self = this;
 
-    this.chart.append("g")
+    var container = this.chart.select('g');
+
+    container.append("g")
         .attr("class", "labels")
       .selectAll('.label')
       .data(this.data)
@@ -18,7 +20,8 @@ function BarChart (element) {
   };
 
   this._rotateLabel = function () {
-    this.chart.select('.axis.x').selectAll('g.tick text')
+    var container = this.chart.select('g');
+    container.select('.axis.x').selectAll('g.tick text')
       .attr('transform', 'rotate('+this.label_rotation+')')
       .style('text-anchor', 'start');
   };
@@ -43,15 +46,16 @@ BarChart.prototype.beforeRender = function () {
   this.chart = d3.select(this.element).append("svg")
       .attr("width", this.width + this.margins.left + this.margins.right)
       .attr("height", this.height + this.margins.top + this.margins.bottom)
-    .append("g")
+
+  this.chart.append("g")
       .attr("transform", "translate(" + this.margins.left + "," + this.margins.top + ")");
 
   this.x.domain(this.data.map(function(d) { return d.key; }));
   this.y.domain([0, d3.max(this.data, function(d) { return d.value; })]);
 
   this.color = d3.scale.ordinal()
-    .domain(this.theme.domain)
-    .range(this.theme.range);
+    .domain(this._domain)
+    .range(this._range);
 
 }
 
@@ -60,16 +64,18 @@ BarChart.prototype.render = function () {
 
   var self = this;
 
-  this.chart.append("g")
+  var container = this.chart.select('g');
+
+  container.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + this.height + ")")
     .call(this.xAxis);
 
-  this.chart.append("g")
+  container.append("g")
     .attr("class", "y axis")
     .call(this.yAxis);
 
-  this.chart.append("g")
+  container.append("g")
       .attr("class", "bars")
     .selectAll(".bar")
       .data(this.data)

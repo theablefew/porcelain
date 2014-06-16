@@ -40,8 +40,8 @@ PieChart.prototype.render = function () {
       .innerRadius(this.inner_radius);
 
   var color = d3.scale.ordinal()
-      .domain(this.theme.domain)
-      .range(this.theme.range);
+      .domain(this._domain)
+      .range(this._range);
 
   var pie = d3.layout.pie()
       .sort(null)
@@ -50,10 +50,11 @@ PieChart.prototype.render = function () {
   this.chart = d3.select(this.element).append("svg")
       .attr("width", this.size.width)
       .attr("height", this.size.height)
-    .append("g")
+
+  var container = this.chart.append("g")
       .attr("transform", "translate(" + this.size.width / 2 + "," + this.size.height / 2 + ")");
 
-  var g = this.chart.selectAll(".pie-slice")
+  var g = container.selectAll(".pie-slice")
       .data(pie(this.data))
     .enter().append("g")
       .attr("class", "pie-slice");

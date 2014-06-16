@@ -30,12 +30,13 @@ HorizontalBarChart.prototype.beforeRender = function () {
   this.x = d3.scale.linear().domain([0, this.yStackMax]).range([0, this.width]);
   this.y = d3.scale.ordinal().domain(d3.range(this.data.length)).rangeRoundBands([2, this.height], .3);
 
-  this.color = d3.scale.ordinal().domain(this.categories).range(this.theme.range)
+  this.color = d3.scale.ordinal().domain(this.categories).range(this._range)
 
   this.chart = d3.select(this.element).append("svg")
       .attr("width", this.width + this.margins.left + this.margins.right)
       .attr("height", this.height + this.margins.top + this.margins.bottom)
-    .append("g")
+
+  this.chart.append("g")
       .attr("transform", "translate(" + this.margins.left + "," + this.margins.top + ")");
 
 
@@ -46,7 +47,7 @@ HorizontalBarChart.prototype.render = function () {
 
   var self = this;
 
-  var layer = this.chart.selectAll(".layer")
+  var layer = this.chart.select('g').selectAll(".layer")
       .data(this.layers)
     .enter().append("g")
       .attr("class", "layer")
@@ -68,7 +69,7 @@ HorizontalBarChart.prototype.render = function () {
 
   this.chart.append("g")
     .attr("class", "x axis")
-    .attr('transform', 'translate(0, '+this.height+')')        
+    .attr('transform', 'translate(0, '+this.height+')')
     .call(xAxis);
 
   var yAxis = d3.svg.axis()

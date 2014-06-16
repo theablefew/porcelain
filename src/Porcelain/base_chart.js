@@ -4,6 +4,10 @@ function BaseChart (element) {
 
 };
 
+BaseChart.prototype.update = function() {
+  this.chart.remove();
+  this.render();
+}
 
 Object.defineProperties(BaseChart.prototype, {
     validate: {
@@ -36,7 +40,7 @@ Object.defineProperties(BaseChart.prototype, {
           });
         }
     }
-  } 
+  }
   , _capabilities: {
         writable: true
       , value   : {}
@@ -58,7 +62,7 @@ Object.defineProperties(BaseChart.prototype, {
           , enumerable : false
           , value      : definition.descriptor.default
         });
-        Object.defineProperty(prototype, capability, definition.property); 
+        Object.defineProperty(prototype, capability, definition.property);
       }
   }
   , _getDimension: {
@@ -174,11 +178,13 @@ BaseChart.prototype.defineCapability(
   'theme', {
       property: {
           get        : function ( ) { return this._theme; }
-        , set        : function (_) { 
-          this._theme = {domain: [], range: [], name: _}
+        , set        : function (_) {
+          this._theme = _;
+          this._domain = [];
+          this._range  = [];
           for(var i in _) {
-            this._theme.domain.push(i);
-            this._theme.range.push(_[i]);
+            this._domain.push(i);
+            this._range.push(_[i]);
           }
         }
         , enumerable : true
