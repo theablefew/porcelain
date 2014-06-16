@@ -365,6 +365,25 @@ Object.defineProperties(BaseChart.prototype, {
         Object.defineProperty(prototype, capability, definition.property);
       }
   }
+  , _getDimension: {
+      value: function (dimension, _) {
+        var measure = _[dimension.toLowerCase()]
+          , parent  = this._element['offset'+dimension];
+
+        switch(typeof measure) {
+          case 'undefined':
+            measure = parent;
+            break;
+          case 'string':
+            measure = (measure.match('%')) ? parent * (parseInt(measure.replace('%', ''))/100) : parent ;
+            break;
+          case 'number':
+          default:
+        }
+
+        return measure;
+      }
+  }
 });
 
 
@@ -439,14 +458,16 @@ BaseChart.prototype.defineCapability(
 BaseChart.prototype.defineCapability(
   'size', {
       property: {
-          get        : function ( ) { return this._size; }
-        , set        : function (_) { this._size = (_ == 'auto') ? {width: _el.offsetWidth, height: _el.offsetHeight} : _; }
+          get        : function ( ) {
+                         return {'width': this._getDimension('Width',  this._size), 'height': this._getDimension('Height',  this._size)};
+                       }
+        , set        : function (_) { this._size = _; }
         , enumerable : true
       }
     , descriptor: {
           defined_in  : BaseChart
         , description : 'Sets the width and height of the chart. Accepts a object with "width" and "height" properties or a string "auto", which sets dimensions to that of the prentent element.'
-        , default     : {width: 400, height: 400}
+        , default     : {}
         , required    : true
         , type        : 'object'
       }
