@@ -40,8 +40,8 @@ PieChart.prototype.render = function () {
       .innerRadius(this.inner_radius);
 
   var color = d3.scale.ordinal()
-      .domain(this.theme.domain)
-      .range(this.theme.range);
+      .domain(this._domain)
+      .range(this._range);
 
   var pie = d3.layout.pie()
       .sort(null)

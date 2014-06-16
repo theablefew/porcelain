@@ -50,8 +50,8 @@ BarChart.prototype.beforeRender = function () {
   this.y.domain([0, d3.max(this.data, function(d) { return d.value; })]);
 
   this.color = d3.scale.ordinal()
-    .domain(this.theme.domain)
-    .range(this.theme.range);
+    .domain(this._domain)
+    .range(this._range);
 
 }
 

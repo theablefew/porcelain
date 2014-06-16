@@ -157,7 +157,6 @@ Porcelain.prototype.overrideRenderer = function (constructor) {
             constructor.prototype.afterRender.call(this);
             this.element.dispatchEvent(new CustomEvent('afterRender', {'detail': constructor.prototype}));
           }
-          
         });
       }
     }

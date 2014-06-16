@@ -30,7 +30,7 @@ HorizontalBarChart.prototype.beforeRender = function () {
   this.x = d3.scale.linear().domain([0, this.yStackMax]).range([0, this.width]);
   this.y = d3.scale.ordinal().domain(d3.range(this.data.length)).rangeRoundBands([2, this.height], .3);
 
-  this.color = d3.scale.ordinal().domain(this.categories).range(this.theme.range)
+  this.color = d3.scale.ordinal().domain(this.categories).range(this._range)
 
   this.chart = d3.select(this.element).append("svg")
       .attr("width", this.width + this.margins.left + this.margins.right)
