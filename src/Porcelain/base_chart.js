@@ -4,6 +4,10 @@ function BaseChart (element) {
 
 };
 
+BaseChart.prototype.update = function() {
+  this.chart.remove();
+  this.render();
+}
 
 Object.defineProperties(BaseChart.prototype, {
     validate: {
