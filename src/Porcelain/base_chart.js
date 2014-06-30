@@ -119,6 +119,21 @@ BaseChart.prototype.defineCapability(
       }
   });
 
+BaseChart.prototype.defineCapability(
+  'formatter', {
+      property: {
+          get        : function ( ) { return this._formatter; }
+        , set        : function (_) { this._formatter = d3.format(_); }
+        , enumerable : true
+      }
+    , descriptor: {
+          defined_in  : BaseChart
+        , description : 'Formatter function for labels.' 
+        , required    : false
+        , type        : 'function'
+      }
+  });
+
 
 BaseChart.prototype.defineCapability(
   'margins', {

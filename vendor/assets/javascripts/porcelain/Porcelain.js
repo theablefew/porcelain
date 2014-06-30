@@ -419,6 +419,21 @@ BaseChart.prototype.defineCapability(
       }
   });
 
+BaseChart.prototype.defineCapability(
+  'formatter', {
+      property: {
+          get        : function ( ) { return this._formatter; }
+        , set        : function (_) { this._formatter = d3.format(_); }
+        , enumerable : true
+      }
+    , descriptor: {
+          defined_in  : BaseChart
+        , description : 'Formatter function for labels.' 
+        , required    : false
+        , type        : 'function'
+      }
+  });
+
 
 BaseChart.prototype.defineCapability(
   'margins', {
@@ -508,12 +523,14 @@ function BarChart (element) {
 
     var container = this.chart.select('g');
 
+
+
     container.append("g")
         .attr("class", "labels")
       .selectAll('.label')
       .data(this.data)
       .enter().append("text")
-        .text(function (d) { return d.value; })
+        .text(function (d) { console.log(self._formatter); return self._formatter !== undefined ? self._formatter(d.value) : d.value; })
           .attr("x", function(d) { return self.x(d.key)+self.x.rangeBand()/2; })
           .attr("y", function(d) { return self.y(d.value)-5; })
           .style('text-anchor', 'middle');
@@ -542,6 +559,8 @@ BarChart.prototype.beforeRender = function () {
 
   this.xAxis = d3.svg.axis().scale(this.x).orient("bottom");
   this.yAxis = d3.svg.axis().scale(this.y).orient("left");
+
+  if(this._formatter) this.yAxis.tickFormat(this._formatter);
 
   this.chart = d3.select(this.element).append("svg")
       .attr("width", this.width + this.margins.left + this.margins.right)
@@ -668,7 +687,7 @@ HorizontalBarChart.prototype.beforeRender = function () {
   this.color = d3.scale.ordinal().domain(this.categories).range(this._range)
 
   this.chart = d3.select(this.element).append("svg")
-      .attr("width", this.width + this.margins.left + this.margins.right)
+      .attr("width", this.width + this.margins.left )
       .attr("height", this.height + this.margins.top + this.margins.bottom)
 
   this.chart.append("g")
