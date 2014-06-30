@@ -658,7 +658,7 @@ HorizontalBarChart.prototype.beforeRender = function () {
 
   this.yGroupMax = d3.max(this.layers, function(layer) { return d3.max(layer, function(d) { return d.y; }); });
   this.yStackMax = d3.max(this.layers, function(layer) { return d3.max(layer, function(d) { return d.y0 + d.y; }); });
-  
+
   this.width  = this.size.width - this.margins.left - this.margins.right;
   this.height = this.size.height - this.margins.top - this.margins.bottom;
 
@@ -688,6 +688,16 @@ HorizontalBarChart.prototype.render = function () {
       .attr("class", "layer")
       .style("fill", function(d, i) { return self.color(self.categories[i]); });
 
+/*  this.chart.select('g')
+    .attr("class", "labels")
+    .selectAll('.label')
+    .data(self.layers)
+    .enter().append("text")
+    .text(function(d,i) { return self.categories[i]; })
+      .attr("x", function(d,i) { console.log(self.categories[i]); return self.x(d) })
+      .attr("y", function(d) { return self.y.rangeBand()/2;});
+*/
+
   layer.selectAll("rect")
     .data(function(d) { return d; })
     .enter().append("rect")
@@ -704,7 +714,7 @@ HorizontalBarChart.prototype.render = function () {
 
   this.chart.append("g")
     .attr("class", "x axis")
-    .attr('transform', 'translate(0, '+this.height+')')
+    .attr('transform', 'translate('+this.margins.left+', '+ this.margins.top + this.height+')')
     .call(xAxis);
 
   var yAxis = d3.svg.axis()
@@ -712,11 +722,16 @@ HorizontalBarChart.prototype.render = function () {
     .tickSize(1)
     .tickPadding(6)
     .tickFormat(function (d) {return self.labels[d]; })
-    .orient("left");
+    .orient("right");
 
-  this.chart.append("g")
+  var ya = this.chart.append("g")
     .attr("class", "y axis")
+    .attr('transform', 'translate('+this.margins.left+', 0)')
     .call(yAxis);
+
+ ya.selectAll('.tick').selectAll('text')
+    .attr('transform', 'translate(0,'+((this.y.rangeBand() / 3) + this.y.rangeBand() / 3 )+')');
+
 
 };
 
