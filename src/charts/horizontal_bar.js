@@ -33,7 +33,7 @@ HorizontalBarChart.prototype.beforeRender = function () {
   this.color = d3.scale.ordinal().domain(this.categories).range(this._range)
 
   this.chart = d3.select(this.element).append("svg")
-      .attr("width", this.width + this.margins.left + this.margins.right)
+      .attr("width", this.width + this.margins.left )
       .attr("height", this.height + this.margins.top + this.margins.bottom)
 
   this.chart.append("g")
