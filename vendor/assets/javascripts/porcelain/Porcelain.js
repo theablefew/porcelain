@@ -522,7 +522,7 @@ function BarChart (element) {
   this._rotateLabel = function () {
     var container = this.chart.select('g');
     container.select('.axis.x').selectAll('g.tick text')
-      .attr('transform', 'rotate('+this.label_rotation+')')
+      .attr('transform', 'rotate('+this.label_rotation+') translate(-20,15)')
       .style('text-anchor', 'start');
   };
 
@@ -592,7 +592,7 @@ BarChart.prototype.render = function () {
 BarChart.prototype.afterRender = function () {
 
   if(this.labels) this._addBarLabels();
-  this._rotateLabel();
+  if(this.label_rotation !== 0) this._rotateLabel();
 
 };
 
