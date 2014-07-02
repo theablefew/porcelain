@@ -1,7 +1,8 @@
 function Callout (chart, options) {
 
-  var keyFormatter   = options.keyFormatter   || function (d) { return d.key;   }
-    , valueFormatter = options.valueFormatter || function (d) { return d.value; }
+  var keyFormatter   = function (d) { return d[options.keyAccessor || "key"];   }
+    , valueFormatter = function (d) { return d[options.valueAccessor || "value"]; }
+    // , valueFormatter = options.valueFormatter || function (d) { return d.value; }
     , pointer_timeout
     , self = this;
 

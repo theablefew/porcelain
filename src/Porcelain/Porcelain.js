@@ -147,7 +147,7 @@ Porcelain.prototype.overrideRenderer = function (constructor) {
         if(constructor.prototype.hasOwnProperty('beforeRender')) {
           constructor.prototype.beforeRender.call(this);
           this.element.dispatchEvent(new CustomEvent('beforeRender', {'detail': constructor.prototype}));
-        }
+        } else { this.element.dispatchEvent(new CustomEvent('beforeRender', {'detail': constructor.prototype})); }
 
         this.validate(arguments, function () {
           renderer.apply(this, arguments);
@@ -156,7 +156,7 @@ Porcelain.prototype.overrideRenderer = function (constructor) {
           if(constructor.prototype.hasOwnProperty('afterRender')) {
             constructor.prototype.afterRender.call(this);
             this.element.dispatchEvent(new CustomEvent('afterRender', {'detail': constructor.prototype}));
-          }
+          } else { this.element.dispatchEvent(new CustomEvent('afterRender', {'detail': constructor.prototype})); }
         });
       }
     }

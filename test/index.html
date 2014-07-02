@@ -29,7 +29,7 @@
         "margins": {"top": 0, "right": 15, "bottom": 40, "left": 10},
         "size": { "height": 350},
         "categories": ["positive", "negative", "neutral", "mixed"],
-        "callout": true,
+        "plugins": {"Callout":{"selector":".split-bar", "keyAccessor": "category", "valueAccessor": "y" }},
         "labels": true,
         "theme": {
           "positive": "rgba(151, 199, 63, 0.6)",
@@ -38,87 +38,6 @@
           "mixed": "rgba(23, 28, 32, 0.6)"
         }
       }'></div>
-
-
-<!-- <div id= "inshow-volume-comparison" class= "porcelain-chartable" data-chart-type= "VolumeTrendChart" data-capabilities='{"data": [{"key": ": 00","value": 143} ,{"key": ": 05","value": 67} ,{"key": ": 10","value": 52} ,{"key": ": 15","value": 48} ,{"key": ": 20","value": 54} ,{"key": ": 25","value": 31} ,{"key": ": 30","value": 54} ,{"key": ": 35","value": 44} ,{"key": ": 40","value": 52} ,{"key": ": 45","value": 39} ,{"key": ": 50","value": 23} ,{"key": ": 55","value": 63} ] , "label_rotation": 45, "margins": {"top": 10, "right": 10, "bottom": 40, "left": 40} , "callout": true, "focus": [": 00"] , "theme": { "bar-normal": "rgba(3,119,177,0.6) ", "bar-focus": "rgba(72,36,120,0.6) ", "trend-line": "rgba(245,134,58,0.8)"}}'> </div> -->
-
-<div id='foo'></div>
-<div id='mobile-legend'></div>
-
-<!-- <div style='width:800px; height:200px;' id='bar1' class='porcelain-chartable'
-  data-label-rotation='45'
-  data-chart-type='volume-chart'
-  data-labels='true'
-  data-focus='["baz"]'
-  data-theme='{
-    "bar-normal": "rgba(3,119,177,0.6)",
-    "bar-focus" : "rgba(72,36,120,0.6)",
-    "trend-line": "rgba(245,134,58,0.8)"}'
-  data-data='[
-    {"key": "foo", "value": 5},
-    {"key": "baz", "value": 85},
-    {"key": "qux", "value": 10}]'></div> -->
-
-<!-- <div id='bar2' class='porcelain-chartable' data-inner-radius='20' data-label-offset='30' data-chart-type='pie-chart' data-radius="100" data-data='[{"key": "foo", "value": 5}, {"key": "baz", "value": 85}, {"key": "qux", "value": 10}]'></div> -->
-
-<!-- <div id='boo' class='porcelain-chartable' data-capabilities='{"radius":75, "data":[{"key": "baz", "value": 90}, {"key": "qux", "value": 10}]}' data-chart-type='pie-chart'></div> -->
-
-<div style='width:600px; height:600px;' id='baz'></div>
-<div id='qux'></div>
-<div id='quack'></div>
-
-<script type="text/javascript">
-
-/*var sentiment_theme = {
-  'foo' : 'rgba(151, 199, 63, 0.6)',
-  'bar' : 'rgba(195, 39, 97, 0.6)',
-  'baz' : 'rgba(227, 223, 189, 0.6)',
-  'qux' : 'rgba(23, 28, 32, 0.6)'
-}
-
-var h = Porcelain.HorizontalBarChart('#baz');
-
-h.data       = [{"foo": 10, "bar": 45, "baz": 30, "qux":20}];
-h.categories = ["foo", "bar", "baz", "qux"];
-h.theme      = sentiment_theme;
-
-h.render();*/
-
-/*var v = Porcelain.VolumeChart('#qux');
-
-v.data = [{"key":"S.H.I.E.L.D.","value":6651},{"key":"The Blacklist","value":3266},{"key":"Revolution","value":1414}];
-v.size = {width:300, height:300};
-v.gap  = 55;
-v.label_rotation = 45;
-v.plugins = {Callout: {selector:'.bar'}}
-
-v.render();*/
-
-/*var vt = Porcelain.VolumeTrendChart('#quack');
-
-vt.data = [
-    {"key":":00","value":143}
-  , {"key":":05","value":67}
-  , {"key":":10","value":52}
-  , {"key":":15","value":48}
-  , {"key":":20","value":54}
-  , {"key":":25","value":31}
-  , {"key":":30","value":54}
-  , {"key":":35","value":44}
-  , {"key":":40","value":52}
-  , {"key":":45","value":39}
-  , {"key":":50","value":23}
-  , {"key":":55","value":63}];
-
-vt.size = {width:800, height:200};
-vt.gap  = 25;
-vt.label_rotation = 45;
-vt.focus = [':30'];
-
-vt.render();
-*/
-
-</script>
 
 </body>
 </html> 
