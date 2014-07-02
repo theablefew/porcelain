@@ -147,7 +147,7 @@ Porcelain.prototype.overrideRenderer = function (constructor) {
         if(constructor.prototype.hasOwnProperty('beforeRender')) {
           constructor.prototype.beforeRender.call(this);
           this.element.dispatchEvent(new CustomEvent('beforeRender', {'detail': constructor.prototype}));
-        }
+        } else { this.element.dispatchEvent(new CustomEvent('beforeRender', {'detail': constructor.prototype})); }
 
         this.validate(arguments, function () {
           renderer.apply(this, arguments);
@@ -156,7 +156,7 @@ Porcelain.prototype.overrideRenderer = function (constructor) {
           if(constructor.prototype.hasOwnProperty('afterRender')) {
             constructor.prototype.afterRender.call(this);
             this.element.dispatchEvent(new CustomEvent('afterRender', {'detail': constructor.prototype}));
-          }
+          } else { this.element.dispatchEvent(new CustomEvent('afterRender', {'detail': constructor.prototype})); }
         });
       }
     }
@@ -670,7 +670,7 @@ HorizontalBarChart.prototype.beforeRender = function () {
   this.layers = d3.layout.stack()(d3.range(this.categories.length).map(function(d) {
     var a = [];
     for (var i = 0; i < self.data.length; ++i) {
-      a[i] = {x: i, y: self.data[i][self.categories[d]], layer:d+1};
+      a[i] = {x: i, y: self.data[i][self.categories[d]], layer:d+1, category: self.categories[d] };
     }
     return a;
   }));
@@ -707,16 +707,6 @@ HorizontalBarChart.prototype.render = function () {
       .attr("class", "layer")
       .style("fill", function(d, i) { return self.color(self.categories[i]); });
 
-/*  this.chart.select('g')
-    .attr("class", "labels")
-    .selectAll('.label')
-    .data(self.layers)
-    .enter().append("text")
-    .text(function(d,i) { return self.categories[i]; })
-      .attr("x", function(d,i) { console.log(self.categories[i]); return self.x(d) })
-      .attr("y", function(d) { return self.y.rangeBand()/2;});
-*/
-
   layer.selectAll("rect")
     .data(function(d) { return d; })
     .enter().append("rect")
@@ -725,6 +715,18 @@ HorizontalBarChart.prototype.render = function () {
     .attr("height", this.y.rangeBand())
     .attr("width", function(d) { return self.x(d.y); })
     .attr("class", "split-bar");
+
+
+  layer.selectAll("text")
+    .data(function(d) { return d; })
+    .enter().append("text")
+    .attr("y", function(d) { return self.y(d.x) + self.y.rangeBand()/2; })
+    .attr("x", function(d) { return (self.x(d.y)/2) + self.x(d.y0); })
+    .attr("class", "split-bar-label")
+    .text(function (d) { return d.category + ' - ' + d.y + '%'; })
+    .style("text-anchor", "middle")
+    .style('display', function (d) { return ( this.getBoundingClientRect().width < self.x(d.y) - 25 ) ? 'block' : 'none'; })
+
 
   var xAxis = d3.svg.axis()
     .tickSize(1)
@@ -931,8 +933,9 @@ Porcelain.register('PieChart', PieChart);
 
 function Callout (chart, options) {
 
-  var keyFormatter   = options.keyFormatter   || function (d) { return d.key;   }
-    , valueFormatter = options.valueFormatter || function (d) { return d.value; }
+  var keyFormatter   = function (d) { return d[options.keyAccessor || "key"];   }
+    , valueFormatter = function (d) { return d[options.valueAccessor || "value"]; }
+    // , valueFormatter = options.valueFormatter || function (d) { return d.value; }
     , pointer_timeout
     , self = this;
 
