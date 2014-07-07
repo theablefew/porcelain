@@ -33,7 +33,7 @@ HorizontalBarChart.prototype.beforeRender = function () {
   this.color = d3.scale.ordinal().domain(this.categories).range(this._range)
 
   this.chart = d3.select(this.element).append("svg")
-      .attr("width", this.width + this.margins.left )
+      .attr("width", this.width + this.margins.left + this.margins.right )
       .attr("height", this.height + this.margins.top + this.margins.bottom)
 
   this.chart.append("g")
@@ -69,15 +69,17 @@ HorizontalBarChart.prototype.render = function () {
     .attr("y", function(d) { return self.y(d.x) + self.y.rangeBand()/2; })
     .attr("x", function(d) { return (self.x(d.y)/2) + self.x(d.y0); })
     .attr("class", "split-bar-label")
-    .text(function (d) { return d.category + ' - ' + d.y + '%'; })
+    .text(function (d) { return self.getLabel({value: d.y, key: d.category}); })
     .style("text-anchor", "middle")
-    .style('display', function (d) { return ( this.getBoundingClientRect().width < self.x(d.y) - 25 ) ? 'block' : 'none'; })
+    .style('display', function (d) { return ( this.getBoundingClientRect().width < self.x(d.y) - 25 ) ? 'block' : 'none'; });
 
 
   var xAxis = d3.svg.axis()
     .tickSize(1)
-    .tickFormat(function (d) { return d+"%"; })
-    .scale(this.x);
+    .tickPadding(6)
+    .tickFormat(function (d) { return self.formatter ? self.formatter(d) : d; })
+    .scale(this.x)
+    .orient("bottom");
 
   this.chart.append("g")
     .attr("class", "x axis")

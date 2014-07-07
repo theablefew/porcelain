@@ -384,6 +384,16 @@ Object.defineProperties(BaseChart.prototype, {
         return measure;
       }
   }
+  , getLabel: {
+    value: function(d) {
+        var label,
+            value = (this.formatter !== undefined) ? this.formatter(d.value) : d.value,
+            key = d.key;
+
+      return (this.show_data_label) ? key + ": " + value : key;
+    }
+  }
+
 });
 
 
@@ -420,6 +430,22 @@ BaseChart.prototype.defineCapability(
   });
 
 BaseChart.prototype.defineCapability(
+    'show_data_label', {
+        property: {
+            get        : function ( ) { return this._show_data_label; }
+          , set        : function (_) { this._show_data_label = _; }
+          , enumerable : true
+        }
+      , descriptor: {
+            defined_in  : BaseChart
+          , description : 'Show data label and key'
+          , default     : false
+          , required    : false
+          , type        : 'boolean'
+        }
+    });
+
+BaseChart.prototype.defineCapability(
   'formatter', {
       property: {
           get        : function ( ) { return this._formatter; }
@@ -428,7 +454,7 @@ BaseChart.prototype.defineCapability(
       }
     , descriptor: {
           defined_in  : BaseChart
-        , description : 'Formatter function for labels.' 
+        , description : 'Formatter function for labels.'
         , required    : false
         , type        : 'function'
       }
@@ -530,7 +556,7 @@ function BarChart (element) {
       .selectAll('.label')
       .data(this.data)
       .enter().append("text")
-        .text(function (d) { console.log(self._formatter); return self._formatter !== undefined ? self._formatter(d.value) : d.value; })
+        .text(function (d) { return self._formatter !== undefined ? self._formatter(d.value) : d.value; })
           .attr("x", function(d) { return self.x(d.key)+self.x.rangeBand()/2; })
           .attr("y", function(d) { return self.y(d.value)-5; })
           .style('text-anchor', 'middle');
@@ -560,7 +586,7 @@ BarChart.prototype.beforeRender = function () {
   this.xAxis = d3.svg.axis().scale(this.x).orient("bottom");
   this.yAxis = d3.svg.axis().scale(this.y).orient("left");
 
-  if(this._formatter) this.yAxis.tickFormat(this._formatter);
+  if(this.formatter) this.yAxis.tickFormat(this.formatter);
 
   this.chart = d3.select(this.element).append("svg")
       .attr("width", this.width + this.margins.left + this.margins.right)
@@ -687,7 +713,7 @@ HorizontalBarChart.prototype.beforeRender = function () {
   this.color = d3.scale.ordinal().domain(this.categories).range(this._range)
 
   this.chart = d3.select(this.element).append("svg")
-      .attr("width", this.width + this.margins.left )
+      .attr("width", this.width + this.margins.left + this.margins.right )
       .attr("height", this.height + this.margins.top + this.margins.bottom)
 
   this.chart.append("g")
@@ -723,15 +749,17 @@ HorizontalBarChart.prototype.render = function () {
     .attr("y", function(d) { return self.y(d.x) + self.y.rangeBand()/2; })
     .attr("x", function(d) { return (self.x(d.y)/2) + self.x(d.y0); })
     .attr("class", "split-bar-label")
-    .text(function (d) { return d.category + ' - ' + d.y + '%'; })
+    .text(function (d) { return self.getLabel({value: d.y, key: d.category}); })
     .style("text-anchor", "middle")
-    .style('display', function (d) { return ( this.getBoundingClientRect().width < self.x(d.y) - 25 ) ? 'block' : 'none'; })
+    .style('display', function (d) { return ( this.getBoundingClientRect().width < self.x(d.y) - 25 ) ? 'block' : 'none'; });
 
 
   var xAxis = d3.svg.axis()
     .tickSize(1)
-    .tickFormat(function (d) { return d+"%"; })
-    .scale(this.x);
+    .tickPadding(6)
+    .tickFormat(function (d) { return self.formatter ? self.formatter(d) : d; })
+    .scale(this.x)
+    .orient("bottom");
 
   this.chart.append("g")
     .attr("class", "x axis")
@@ -785,9 +813,11 @@ function PieChart (element) {
 
   this._getCentroid = function (d, r) {
 
+    var radius_threshold = d.value < this.offset_threshold ? this.radius + r : this.radius;
+
     return d3.svg.arc()
-      .outerRadius(this.radius+r)
-      .innerRadius((this.label_offset > 0) ? this.radius + r : this.inner_radius)
+      .outerRadius(radius_threshold)
+      .innerRadius((this.label_offset > 0 && d.value < this.offset_threshold) ? this.radius + r : this.inner_radius)
       .centroid(d);
   };
 
@@ -796,7 +826,7 @@ function PieChart (element) {
     if((d.endAngle - d.startAngle) < (Math.PI/180)*10 ) {this.count++; return this.offset_padding*(this.count);}
     else { return 0;}
 
-  }
+  };
 
 }
 
@@ -806,7 +836,7 @@ Util.extendChart(PieChart, BaseChart);
 
 PieChart.prototype.beforeRender = function () {
   this.data.sort(function (a, b) { return d3.descending(a.value, b.value);});
-}
+};
 
 
 PieChart.prototype.render = function () {
@@ -844,11 +874,11 @@ PieChart.prototype.render = function () {
 
   g.append("text")
       .attr("transform", function(d, i) {
-        var centroid_outside = self._getCentroid(d, self.label_offset + self._getMultiplier(d, i))
+        var centroid_outside = self._getCentroid(d, self.label_offset + self._getMultiplier(d, i));
         return "translate(" + centroid_outside + ")"; })
       .attr("dy", ".35em")
       .style("text-anchor", "middle")
-      .text(function(d) { return d.data.key; });
+      .text(function(d) { return self.getLabel(d.data); });
 
   g.append('path')
     .attr('class', 'pie-callout')
@@ -856,10 +886,10 @@ PieChart.prototype.render = function () {
       // var centroid_outside = self._getCentroid(d, self.label_offset-self.offset_padding + self._getMultiplier(d, i))
       var centroid_outside = self._getCentroid(d, self.label_offset-padding)
         , centroid_inside  = self._getCentroid(d, padding, i);
-      if(self.label_offset > 0 ) return d3.svg.line()([centroid_inside, centroid_outside]);
+      if(self.label_offset > 0 && d.value < self.offset_threshold) return d3.svg.line()([centroid_inside, centroid_outside]);
     });
 
-}
+};
 
 
 PieChart.prototype.defineCapability(
@@ -871,7 +901,7 @@ PieChart.prototype.defineCapability(
         }
       , descriptor: {
             defined_in  : PieChart
-          , description : 'Outsize radius of the pie chart'
+          , description : 'Outside radius of the pie chart'
           , default     : 100
           , required    : false
           , type        : 'int'
@@ -928,6 +958,24 @@ PieChart.prototype.defineCapability(
         }
     });
 
+PieChart.prototype.defineCapability(
+    'offset_threshold', {
+        property: {
+            get        : function ( ) { return this._offset_threshold; }
+          , set        : function (_) { this._offset_threshold = _; }
+          , enumerable : true
+        }
+      , descriptor: {
+            defined_in  : PieChart
+          , description : 'Minimum slice percentage before label_offset is activated'
+          , default     : 0.25
+          , required    : false
+          , type        : 'int'
+        }
+    });
+
+
+
 
 Porcelain.register('PieChart', PieChart);
 
@@ -967,7 +1015,8 @@ Callout.prototype.drawPointer = function (chart, x, y, text, val) {
     , y_offset = (y <= chart.size.height/2) ? 2*h : 0
     , points = w/2-padding+','+h+' '+
         + parseInt(x_offset)+','+ parseInt(0-y_offset + h*2) +' '
-        + parseInt(w/2+padding)+','+h;
+        + parseInt(w/2+padding)+','+h
+    , formatted_value = (chart.formatter !== undefined) ? chart.formatter(val) : val;
 
   pointer.attr('width', w)
     .attr('x', 0)
@@ -979,7 +1028,7 @@ Callout.prototype.drawPointer = function (chart, x, y, text, val) {
   title.attr('y', font_size + padding + y_offset/2);
 
   callout.append('text')
-    .text(val)
+    .text(formatted_value)
     .attr('x', padding)
     .attr('y', (font_size * 2) + padding + 2 + y_offset/2);
 

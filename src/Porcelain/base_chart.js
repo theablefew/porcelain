@@ -84,6 +84,16 @@ Object.defineProperties(BaseChart.prototype, {
         return measure;
       }
   }
+  , getLabel: {
+    value: function(d) {
+        var label,
+            value = (this.formatter !== undefined) ? this.formatter(d.value) : d.value,
+            key = d.key;
+
+      return (this.show_data_label) ? key + ": " + value : key;
+    }
+  }
+
 });
 
 
@@ -120,6 +130,22 @@ BaseChart.prototype.defineCapability(
   });
 
 BaseChart.prototype.defineCapability(
+    'show_data_label', {
+        property: {
+            get        : function ( ) { return this._show_data_label; }
+          , set        : function (_) { this._show_data_label = _; }
+          , enumerable : true
+        }
+      , descriptor: {
+            defined_in  : BaseChart
+          , description : 'Show data label and key'
+          , default     : false
+          , required    : false
+          , type        : 'boolean'
+        }
+    });
+
+BaseChart.prototype.defineCapability(
   'formatter', {
       property: {
           get        : function ( ) { return this._formatter; }
@@ -128,7 +154,7 @@ BaseChart.prototype.defineCapability(
       }
     , descriptor: {
           defined_in  : BaseChart
-        , description : 'Formatter function for labels.' 
+        , description : 'Formatter function for labels.'
         , required    : false
         , type        : 'function'
       }

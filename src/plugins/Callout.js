@@ -34,7 +34,8 @@ Callout.prototype.drawPointer = function (chart, x, y, text, val) {
     , y_offset = (y <= chart.size.height/2) ? 2*h : 0
     , points = w/2-padding+','+h+' '+
         + parseInt(x_offset)+','+ parseInt(0-y_offset + h*2) +' '
-        + parseInt(w/2+padding)+','+h;
+        + parseInt(w/2+padding)+','+h
+    , formatted_value = (chart.formatter !== undefined) ? chart.formatter(val) : val;
 
   pointer.attr('width', w)
     .attr('x', 0)
@@ -46,7 +47,7 @@ Callout.prototype.drawPointer = function (chart, x, y, text, val) {
   title.attr('y', font_size + padding + y_offset/2);
 
   callout.append('text')
-    .text(val)
+    .text(formatted_value)
     .attr('x', padding)
     .attr('y', (font_size * 2) + padding + 2 + y_offset/2);
 

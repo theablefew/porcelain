@@ -6,9 +6,11 @@ function PieChart (element) {
 
   this._getCentroid = function (d, r) {
 
+    var radius_threshold = d.value < this.offset_threshold ? this.radius + r : this.radius;
+
     return d3.svg.arc()
-      .outerRadius(this.radius+r)
-      .innerRadius((this.label_offset > 0) ? this.radius + r : this.inner_radius)
+      .outerRadius(radius_threshold)
+      .innerRadius((this.label_offset > 0 && d.value < this.offset_threshold) ? this.radius + r : this.inner_radius)
       .centroid(d);
   };
 
@@ -17,7 +19,7 @@ function PieChart (element) {
     if((d.endAngle - d.startAngle) < (Math.PI/180)*10 ) {this.count++; return this.offset_padding*(this.count);}
     else { return 0;}
 
-  }
+  };
 
 }
 
@@ -27,7 +29,7 @@ Util.extendChart(PieChart, BaseChart);
 
 PieChart.prototype.beforeRender = function () {
   this.data.sort(function (a, b) { return d3.descending(a.value, b.value);});
-}
+};
 
 
 PieChart.prototype.render = function () {
@@ -65,11 +67,11 @@ PieChart.prototype.render = function () {
 
   g.append("text")
       .attr("transform", function(d, i) {
-        var centroid_outside = self._getCentroid(d, self.label_offset + self._getMultiplier(d, i))
+        var centroid_outside = self._getCentroid(d, self.label_offset + self._getMultiplier(d, i));
         return "translate(" + centroid_outside + ")"; })
       .attr("dy", ".35em")
       .style("text-anchor", "middle")
-      .text(function(d) { return d.data.key; });
+      .text(function(d) { return self.getLabel(d.data); });
 
   g.append('path')
     .attr('class', 'pie-callout')
@@ -77,10 +79,10 @@ PieChart.prototype.render = function () {
       // var centroid_outside = self._getCentroid(d, self.label_offset-self.offset_padding + self._getMultiplier(d, i))
       var centroid_outside = self._getCentroid(d, self.label_offset-padding)
         , centroid_inside  = self._getCentroid(d, padding, i);
-      if(self.label_offset > 0 ) return d3.svg.line()([centroid_inside, centroid_outside]);
+      if(self.label_offset > 0 && d.value < self.offset_threshold) return d3.svg.line()([centroid_inside, centroid_outside]);
     });
 
-}
+};
 
 
 PieChart.prototype.defineCapability(
@@ -92,7 +94,7 @@ PieChart.prototype.defineCapability(
         }
       , descriptor: {
             defined_in  : PieChart
-          , description : 'Outsize radius of the pie chart'
+          , description : 'Outside radius of the pie chart'
           , default     : 100
           , required    : false
           , type        : 'int'
@@ -148,6 +150,24 @@ PieChart.prototype.defineCapability(
           , type        : 'int'
         }
     });
+
+PieChart.prototype.defineCapability(
+    'offset_threshold', {
+        property: {
+            get        : function ( ) { return this._offset_threshold; }
+          , set        : function (_) { this._offset_threshold = _; }
+          , enumerable : true
+        }
+      , descriptor: {
+            defined_in  : PieChart
+          , description : 'Minimum slice percentage before label_offset is activated'
+          , default     : 0.25
+          , required    : false
+          , type        : 'int'
+        }
+    });
+
+
 
 
 Porcelain.register('PieChart', PieChart);
