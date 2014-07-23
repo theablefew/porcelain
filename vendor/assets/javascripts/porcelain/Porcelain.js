@@ -304,11 +304,6 @@ function BaseChart (element) {
 
 };
 
-BaseChart.prototype.update = function() {
-  this.chart.remove();
-  this.render();
-}
-
 Object.defineProperties(BaseChart.prototype, {
     validate: {
       value: function (render_args, render) {
@@ -340,6 +335,37 @@ Object.defineProperties(BaseChart.prototype, {
           });
         }
     }
+  }
+  , wrap: {
+      value: function(text, width) {
+        text.each(function() {
+          var text = d3.select(this),
+              words = text.text().split(/\s+/).reverse(),
+              word,
+              line = [],
+              lineNumber = 0,
+              lineHeight = 1.1, // ems
+              y = text.attr("y"),
+              dy = parseFloat(text.attr("dy")),
+              tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+          while (word = words.pop()) {
+            line.push(word);
+            tspan.text(line.join(" "));
+            if (tspan.node().getComputedTextLength() > width) {
+              line.pop();
+              tspan.text(line.join(" "));
+              line = [word];
+              tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+            }
+          }
+        });
+      }
+  }
+  , update: {
+      value: function() {
+        this.chart.remove();
+        this.render();
+      }
   }
   , _capabilities: {
         writable: true
@@ -550,7 +576,6 @@ function BarChart (element) {
     var container = this.chart.select('g');
 
 
-
     container.append("g")
         .attr("class", "labels")
       .selectAll('.label')
@@ -560,6 +585,8 @@ function BarChart (element) {
           .attr("x", function(d) { return self.x(d.key)+self.x.rangeBand()/2; })
           .attr("y", function(d) { return self.y(d.value)-5; })
           .style('text-anchor', 'middle');
+
+
   };
 
   this._rotateLabel = function () {
@@ -580,7 +607,7 @@ BarChart.prototype.beforeRender = function () {
   this.width = this.size.width - this.margins.left - this.margins.right;
   this.height = this.size.height - this.margins.top - this.margins.bottom;
 
-  this.x = d3.scale.ordinal().rangeRoundBands([0, this.width], .1);
+  this.x = d3.scale.ordinal().rangeRoundBands([0, this.width], 0.1);
   this.y = d3.scale.linear().range([this.height, 0]);
 
   this.xAxis = d3.svg.axis().scale(this.x).orient("bottom");
@@ -590,7 +617,7 @@ BarChart.prototype.beforeRender = function () {
 
   this.chart = d3.select(this.element).append("svg")
       .attr("width", this.width + this.margins.left + this.margins.right)
-      .attr("height", this.height + this.margins.top + this.margins.bottom)
+      .attr("height", this.height + this.margins.top + this.margins.bottom);
 
   this.chart.append("g")
       .attr("transform", "translate(" + this.margins.left + "," + this.margins.top + ")");
@@ -602,7 +629,7 @@ BarChart.prototype.beforeRender = function () {
     .domain(this._domain)
     .range(this._range);
 
-}
+};
 
 
 BarChart.prototype.render = function () {
@@ -611,10 +638,13 @@ BarChart.prototype.render = function () {
 
   var container = this.chart.select('g');
 
-  container.append("g")
+  var xAxisG = container.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + this.height + ")")
     .call(this.xAxis);
+  
+  xAxisG.selectAll(".tick text")
+    .call(self.wrap, self.x.rangeBand() - 8);
 
   container.append("g")
     .attr("class", "y axis")
