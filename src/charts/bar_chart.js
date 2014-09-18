@@ -14,7 +14,7 @@ function BarChart (element) {
       .selectAll('.label')
       .data(this.data)
       .enter().append("text")
-        .text(function (d) { return self._formatter !== undefined ? self._formatter(d.value) : d.value; })
+        .text(function (d) { return self._formatter !== undefined ? d3.format(self._formatter)(d.value) : d.value; })
           .attr("x", function(d) { return self.x(d.key)+self.x.rangeBand()/2; })
           .attr("y", function(d) { return self.y(d.value)-5; })
           .style('text-anchor', 'middle');
@@ -46,7 +46,7 @@ BarChart.prototype.beforeRender = function () {
   this.xAxis = d3.svg.axis().scale(this.x).orient("bottom");
   this.yAxis = d3.svg.axis().scale(this.y).orient("left");
 
-  if(this.formatter) this.yAxis.tickFormat(this.formatter);
+  if(this.formatter) this.yAxis.tickFormat(d3.format(this.formatter));
 
   this.chart = d3.select(this.element).append("svg")
       .attr("width", this.width + this.margins.left + this.margins.right)

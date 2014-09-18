@@ -77,7 +77,7 @@ HorizontalBarChart.prototype.render = function () {
   var xAxis = d3.svg.axis()
     .tickSize(1)
     .tickPadding(6)
-    .tickFormat(function (d) { return self.formatter ? self.formatter(d) : d; })
+    .tickFormat(function (d) { return self.formatter ? d3.format(self.formatter)(d) : d; })
     .scale(this.x)
     .orient("bottom");
 

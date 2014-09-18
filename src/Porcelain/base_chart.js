@@ -113,7 +113,7 @@ Object.defineProperties(BaseChart.prototype, {
   , getLabel: {
     value: function(d) {
         var label,
-            value = (this.formatter !== undefined) ? this.formatter(d.value) : d.value,
+            value = (this.formatter !== undefined) ? d3.format(this.formatter)(d.value) : d.value,
             key = d.key;
 
       return (this.show_data_label) ? key + ": " + value : key;
@@ -175,7 +175,7 @@ BaseChart.prototype.defineCapability(
   'formatter', {
       property: {
           get        : function ( ) { return this._formatter; }
-        , set        : function (_) { this._formatter = d3.format(_); }
+        , set        : function (_) { this._formatter = _; }
         , enumerable : true
       }
     , descriptor: {

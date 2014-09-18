@@ -35,7 +35,7 @@ Callout.prototype.drawPointer = function (chart, x, y, text, val) {
     , points = w/2-padding+','+h+' '+
         + parseInt(x_offset)+','+ parseInt(0-y_offset + h*2) +' '
         + parseInt(w/2+padding)+','+h
-    , formatted_value = (chart.formatter !== undefined) ? chart.formatter(val) : val;
+    , formatted_value = (chart.formatter !== undefined) ? d3.format(chart.formatter)(val) : val;
 
   pointer.attr('width', w)
     .attr('x', 0)

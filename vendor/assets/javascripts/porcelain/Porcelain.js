@@ -413,7 +413,7 @@ Object.defineProperties(BaseChart.prototype, {
   , getLabel: {
     value: function(d) {
         var label,
-            value = (this.formatter !== undefined) ? this.formatter(d.value) : d.value,
+            value = (this.formatter !== undefined) ? d3.format(this.formatter)(d.value) : d.value,
             key = d.key;
 
       return (this.show_data_label) ? key + ": " + value : key;
@@ -475,7 +475,7 @@ BaseChart.prototype.defineCapability(
   'formatter', {
       property: {
           get        : function ( ) { return this._formatter; }
-        , set        : function (_) { this._formatter = d3.format(_); }
+        , set        : function (_) { this._formatter = _; }
         , enumerable : true
       }
     , descriptor: {
@@ -581,7 +581,7 @@ function BarChart (element) {
       .selectAll('.label')
       .data(this.data)
       .enter().append("text")
-        .text(function (d) { return self._formatter !== undefined ? self._formatter(d.value) : d.value; })
+        .text(function (d) { return self._formatter !== undefined ? d3.format(self._formatter)(d.value) : d.value; })
           .attr("x", function(d) { return self.x(d.key)+self.x.rangeBand()/2; })
           .attr("y", function(d) { return self.y(d.value)-5; })
           .style('text-anchor', 'middle');
@@ -613,7 +613,7 @@ BarChart.prototype.beforeRender = function () {
   this.xAxis = d3.svg.axis().scale(this.x).orient("bottom");
   this.yAxis = d3.svg.axis().scale(this.y).orient("left");
 
-  if(this.formatter) this.yAxis.tickFormat(this.formatter);
+  if(this.formatter) this.yAxis.tickFormat(d3.format(this.formatter));
 
   this.chart = d3.select(this.element).append("svg")
       .attr("width", this.width + this.margins.left + this.margins.right)
@@ -787,7 +787,7 @@ HorizontalBarChart.prototype.render = function () {
   var xAxis = d3.svg.axis()
     .tickSize(1)
     .tickPadding(6)
-    .tickFormat(function (d) { return self.formatter ? self.formatter(d) : d; })
+    .tickFormat(function (d) { return self.formatter ? d3.format(self.formatter)(d) : d; })
     .scale(this.x)
     .orient("bottom");
 
@@ -1046,7 +1046,7 @@ Callout.prototype.drawPointer = function (chart, x, y, text, val) {
     , points = w/2-padding+','+h+' '+
         + parseInt(x_offset)+','+ parseInt(0-y_offset + h*2) +' '
         + parseInt(w/2+padding)+','+h
-    , formatted_value = (chart.formatter !== undefined) ? chart.formatter(val) : val;
+    , formatted_value = (chart.formatter !== undefined) ? d3.format(chart.formatter)(val) : val;
 
   pointer.attr('width', w)
     .attr('x', 0)
