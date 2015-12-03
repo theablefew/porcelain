@@ -143,7 +143,6 @@ Porcelain.prototype.overrideRenderer = function (constructor) {
   Object.defineProperties(constructor.prototype, {
     'render': {
       value: function () {
-
         if(constructor.prototype.hasOwnProperty('beforeRender')) {
           constructor.prototype.beforeRender.call(this);
           this.element.dispatchEvent(new CustomEvent('beforeRender', {'detail': constructor.prototype}));

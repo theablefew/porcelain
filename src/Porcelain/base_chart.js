@@ -1,5 +1,4 @@
 function BaseChart (element) {
-
   this.element = element;
 
 };
@@ -84,11 +83,19 @@ Object.defineProperties(BaseChart.prototype, {
         var prototype = definition.descriptor.defined_in.prototype;
         prototype._capabilities[capability] = definition.descriptor;
         Object.defineProperty(prototype, '_'+capability, {
-            writable  : true
+            writable   : true
           , enumerable : false
           , value      : definition.descriptor.default
         });
-        Object.defineProperty(prototype, capability, definition.property);
+        if(definition.property === undefined) {
+          Object.defineProperty(prototype, capability, {
+              get        : function ( ) { return this['_'+capability]; }
+            , set        : function (_) { this['_'+capability] = _; }
+            , enumerable : true
+          });
+        }else{
+          Object.defineProperty(prototype, capability, definition.property);
+        }
       }
   }
   , _getDimension: {

@@ -177,3 +177,9 @@ Simply define ```beforeRender``` and/or ```afterRender``` on the chart's prototy
 
 ###Property type-definition and validation
 NOT YET IMPLEMENTED
+
+
+
+## Building Porcelain
+
+grunt
